@@ -1,0 +1,387 @@
+.body-login, .body-signup, .body-edit-employee, .body-request-vacation {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #dadada;
+}
+
+.body-login input[type="text"], 
+.body-login input[type="password"], 
+.body-signup input[type="text"],
+.body-signup input[type="password"],
+.body-edit-employee input[type="text"],
+.body-edit-employee input[type="password"]
+ {
+    width: 100%;
+}
+
+
+.assign-vacations-container, .request-vacation-container{  
+    justify-content: center;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:rgb(226, 224, 220);
+    padding: 70px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    
+  
+}
+
+.assign-vacations-form {
+    display: grid;
+    justify-content: center;
+}
+.form-select, .form-input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+
+/* Contenedor del formulario de login y signup */
+.login-container, .signup-container,.edit-employee-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+.assign-vacations-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+.assign-vacations-form {
+    width: 100%;
+}
+
+/* Título del formulario */
+.login-title, .signup-title, .edit-employee-title{
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Formulario */
+.login-form, .signup-form, .edit-employee-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Grupos de formularios (label + input) */
+.form-group {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+/* Estilo para las etiquetas de los inputs */
+.form-group label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Estilo para los inputs */
+.form-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #2980b9;
+    outline: none;
+}
+
+button{
+background-color: #2980b9;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+
+}
+
+button:hover {
+    background-color: #0056b3;
+} 
+
+
+
+/* Estilo del enlace de registro/iniciar sesión */
+.signup-link, .login-link {
+    font-size: 14px;
+    color: #555;
+}
+
+.signup-link a, .login-link a {
+    color: #2980b9;
+    text-decoration: none;
+}
+
+.signup-link a:hover, .login-link a:hover {
+    text-decoration: underline;
+}
+
+
+
+/* Layout general */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+} */
+
+/* Barra de navegación */
+nav {
+    background-color: #007bff;
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ffdd57;
+}
+
+
+
+
+.form-group .label-with-icon {
+    display: flex;
+    align-items: center;
+}
+
+.icon-password {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    color: #333;
+}
+
+.icon-user{
+    width: 24px;
+    height: 24px;
+    margin: 0 4px 0 4px;
+    color: #333;
+
+}
+
+.icon-close-session{
+    width: 24px;
+    height: 24px;
+    margin: 0 4px -5px 4px;
+    color: #333;
+
+}
+
+
+
+
+.welcome-message {
+    font-size: 24px; /* Tamaño de fuente grande */
+    font-weight: bold; /* Texto en negrita */
+    color: #2c3e50; /* Un color oscuro para mejor visibilidad */
+    margin-left: auto; /* Alineado a la derecha */
+    margin-right: 20px; /* Un poco de espacio a la derecha */
+}
+
+/* Estilo de tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 12px;
+    text-align: left;
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+
+
+
+
+.alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f8d7da; /* Rojo claro */
+    color: #721c24; /* Color del texto */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none; /* Oculto por defecto */
+}
+.alert-success {
+    background-color: #d4edda; /* Verde claro */
+    color: #155724;
+}
+.alert-error {
+    background-color: #f8d7da; /* Rojo claro */
+    color: #721c24;
+}
+.close-btn {
+    float: right;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
+
+/* General */
+.dashboard-title {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.vacation-container {
+    display: flex;
+    justify-content: center; /* Espacio entre las cajas */
+    gap: 20px; /* Espacio entre los div */
+    margin-bottom: 20px;
+}
+
+
+.vacation-summary, .next-vacation {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+h3 {
+    font-size: 20px;
+    color: #34495e;
+    margin-bottom: 15px;
+}
+
+/* Estilo del resumen de vacaciones */
+.vacation-stats p {
+    font-size: 16px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: start;
+}
+
+.vacation-stats p strong {
+    color: #2c3e50;
+}
+
+.vacation-stats p span {
+    font-weight: bold;
+    color: #27ae60;
+}
+
+/* Estilo de las próximas vacaciones */
+.vacation-dates p {
+    font-size: 16px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: start;
+}
+
+.vacation-dates p span {
+    font-weight: bold;
+    color: #2980b9;
+}
+
+/* Mensaje de no vacaciones */
+.no-vacation-msg {
+    font-size: 16px;
+    color: #e74c3c;
+    text-align: center;
+}
+
+
+#calendar {
+    max-width: 1000px;
+    margin: 0 auto; 
+    margin-bottom: 50px;
+    
+    
+}
