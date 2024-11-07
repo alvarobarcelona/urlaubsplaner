@@ -1,55 +1,73 @@
-.body-login, .body-signup, .body-edit-employee, .body-request-vacation {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #dadada;
+.body-login{
+   /* width: 60%;  
+    max-width: 500px;  */
+    background-color: #fff;
+    padding: 4rem;
+    border-radius: 8px;
 }
 
 .body-login input[type="text"], 
 .body-login input[type="password"], 
-.body-signup input[type="text"],
-.body-signup input[type="password"],
 .body-edit-employee input[type="text"],
 .body-edit-employee input[type="password"]
  {
-    width: 100%;
+    width: 80%;
+}
+
+.body-signup input[type="text"],
+.body-signup input[type="password"]
+{
+    width: 50%;
 }
 
 
+/*  .body-signup, .body-edit-employee, .body-request-vacation {
+    background: linear-gradient(135deg, #ececec, #dadada);
+} */
+
 .assign-vacations-container, .request-vacation-container{  
-    justify-content: center;
-    margin: 0;
+    /* justify-content: center; */
+    margin: 40px auto;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+     flex-direction: column; 
+    /* justify-content: center; */
+    /* align-items: center; */
     background-color:rgb(226, 224, 220);
-    padding: 70px;
+     padding: 20px; 
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    text-align: center; 
+    max-width: 700px;
     
   
 }
 
-.assign-vacations-form {
+ .assign-vacations-form {
     display: grid;
     justify-content: center;
-}
+} 
 .form-select, .form-input {
-    width: 100%;
-    padding: 8px;
+    width: 80%;
+    padding: 5px;
     border-radius: 4px;
     border: 1px solid #ccc;
 }
 
 
+.edit-employee-container, .signup-container{
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 850px;
+    text-align: center;
+    margin: 30px auto;
+}
+
+
 /* Contenedor del formulario de login y signup */
-.login-container, .signup-container,.edit-employee-container {
+.login-container{
     background-color: #fff;
     padding: 40px;
     border-radius: 8px;
@@ -57,6 +75,7 @@
     width: 100%;
     max-width: 400px;
     text-align: center;
+    margin:40px auto;
 }
 .assign-vacations-title {
     margin-bottom: 20px;
@@ -83,8 +102,8 @@
 
 /* Grupos de formularios (label + input) */
 .form-group {
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
     text-align: left;
 }
 
@@ -98,7 +117,7 @@
 
 /* Estilo para los inputs */
 .form-group input {
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
@@ -241,8 +260,9 @@ nav ul li a:hover {
 
 /* Estilo de tablas */
 table {
-    width: 100%;
+    width: 90%;
     border-collapse: collapse;
+    margin:auto;
     margin-bottom: 20px;
     background-color: #fff;
 }
@@ -384,4 +404,70 @@ h3 {
     margin-bottom: 50px;
     
     
+} 
+
+.body-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+.profile-container {
+    width: 50%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+}
+
+.profile-details p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+/* .edit-profile-btn {
+    display: block;
+    width: fit-content;
+    margin: 1rem auto 0;
+    padding: 0.5rem 1rem;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.edit-profile-btn:hover {
+    background-color: #0056b3;
+} */
+
+
+
+
+.footer {
+    background-color: #f1f1f1;
+    text-align: center;   
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-nav a {
+    color: #333;
+    margin: 0 10px;
+    text-decoration: none;
+}
+.footer-nav a:hover {
+    text-decoration: underline;
 }

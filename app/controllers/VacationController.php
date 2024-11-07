@@ -16,6 +16,18 @@ class VacationController {
         $this->vacationModel = new VacationModel();  // Instanciar el modelo
     }
 
+    public function generalDashboard() {
+        
+        // $is_admin = ($_SESSION['role_id'] == 1);
+        $user_id = $_SESSION['user_id'];
+        $user_name = $_SESSION['username'];
+
+        $vacations = $this->vacationModel->getApprovedVacations($user_id);
+        // Cargar la vista y pasar los datos necesarios
+        require_once __DIR__ . '/../views/general_dashboard.php';
+
+    }
+
     
     public function manageRequests() {
         // Asegurarse de que el usuario es administrador
@@ -29,7 +41,7 @@ class VacationController {
         $requests = $vacationModel->getPendingRequests();
     
         if ($requests === null || empty($requests)) {
-            $_SESSION['error_message'] = "No se encontraron solicitudes pendientes.";
+            $_SESSION['error_message'] = "Es wurden keine offenen Anträge gefunden.";
             $requests = [];  // Asegurarse de que $requests no esté nulo
         }
     
@@ -87,9 +99,27 @@ class VacationController {
             $start_date = $_POST['start_date'];
             $end_date = $_POST['end_date'];
             $vacation_type_id = $_POST['vacation_type_id'];
+            $start_time = $_POST['start_time'];
+            $end_time = $_POST['end_time'];  
 
           
-        $success = $vacationModel->requestVacation($employee_id, $vacation_type_id, $start_date, $end_date );
+
+
+            $start_datetime = $start_date . ' ' . $start_time;
+            $end_datetime = $end_date . ' ' . $end_time;
+
+            // Determinar si es medio día
+        if (($start_time === '08:00' && $end_time === '12:00') || 
+            ($start_time === '12:00' && $end_time === '16:00')) {
+                $is_half_day = 0.5;
+                $half_day_period = ($start_time === '08:00') ? 'Vormittag' : 'Nachmittag';
+        } else {
+        // Día completo
+                $is_half_day = 0;
+                $half_day_period = null;
+    }
+          
+        $success = $vacationModel->requestVacation($employee_id, $vacation_type_id, $start_datetime, $end_datetime, $is_half_day, $half_day_period );
 
             if ($success) {
                 $_SESSION['success_message'] = "Solicitud de vacaciones enviada exitosamente.";
@@ -130,6 +160,9 @@ class VacationController {
 
 
     public function cancelVacation() {
+
+        $is_admin = ($_SESSION['role_id'] == 1);
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $request_id = $_POST['request_id'];  // ID de la solicitud a cancelar
             
@@ -149,8 +182,13 @@ class VacationController {
             } else {
                 $_SESSION['error_message'] = "Hubo un error al cancelar la solicitud.";
             }
-    
-            header("Location: /vacation_app/local/index.php?action=manageRequests");
+            
+            // Redirigir según el rol del usuario
+        if ($is_admin) {
+            header("Location: /vacation_app/local/index.php?action=manageRequests");  // Redirección para el administrador
+        } else {
+            header("Location: /vacation_app/app/views/employee_dashboard.php");  // Redirección para el empleado
+        }
             exit();
         }
     }

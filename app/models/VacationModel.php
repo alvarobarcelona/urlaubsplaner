@@ -33,11 +33,13 @@ class VacationModel {
 
     // Solicitar vacaciones
     //Funciona correctamente
-    public function requestVacation($employee_id, $vacation_type_id, $start_date, $end_date) {
+    public function requestVacation($employee_id, $vacation_type_id, $start_datetime, $end_datetime, $is_half_day = false , $half_day_period = null) {
+
+       
         // Insertar la nueva solicitud de vacaciones con estado 'Pending'
-        $stmt = $this->db->prepare("INSERT INTO vacation_requests (employee_id, vacation_type_id, start_date, end_date, status) 
-                                    VALUES (?, ?, ?, ?, 'Pending')");
-        $stmt->bind_param("iiss", $employee_id, $vacation_type_id, $start_date, $end_date );
+        $stmt = $this->db->prepare("INSERT INTO vacation_requests (employee_id, vacation_type_id, start_date, end_date, is_half_day, half_day_period, status) 
+                                    VALUES (?, ?, ?, ?, ?, ?, 'Pending')");
+        $stmt->bind_param("iissds", $employee_id, $vacation_type_id, $start_datetime, $end_datetime, $is_half_day, $half_day_period );
         $success = $stmt->execute();  // Retorna true si la ejecución fue exitosa
         
         return $success;
@@ -74,7 +76,7 @@ class VacationModel {
         // Calcular la diferencia en días
         $start = new DateTime($start_date);
         $end = new DateTime($end_date);
-        $days_requested = $end->diff($start)->days + 1;  // Incluye el primer día
+        $days_requested = $end->diff($start)->days;  // Incluye el primer día
     
         // Determinar la columna a actualizar dependiendo del tipo de vacaciones
         if ($vacation_type_id == 2) {  // Sonder Urlaub (vacaciones especiales)
@@ -139,7 +141,7 @@ public function cancelApprovedVacation($request_id) {
         // Calcular la diferencia en días entre las fechas
         $start = new DateTime($start_date);
         $end = new DateTime($end_date);
-        $days_requested = $end->diff($start)->days + 1;  // Sumamos 1 porque incluye el primer día
+        $days_requested = $end->diff($start)->days;  
     
    
     // Determinar la columna a actualizar dependiendo del tipo de vacaciones
@@ -180,21 +182,17 @@ public function cancelApprovedVacation($request_id) {
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
+ // Obtener el estado de vacaciones del empleado
+ public function getEmployeeVacation($employee_id) {
+    $stmt = $this->db->prepare("SELECT total_vacation_days, used_vacation_days, sick_days, special_holidays_days
+        FROM users
+        WHERE id = ?");
+    $stmt->bind_param("i", $employee_id);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_assoc();
+}
 
-
-
-
-
-
-     // Obtener el estado de vacaciones del empleado
-     public function getEmployeeVacationStatus($employee_id) {
-        $stmt = $this->db->prepare("SELECT total_vacation_days, used_vacation_days, sick_days, special_holidays_days FROM users WHERE id = ?");
-        $stmt->bind_param("i", $employee_id);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
-    }
-
-    // Obtener las próximas vacaciones aprobadas
+    // Obtener las próximas vacaciones aprobadas///REVISAR
     public function getNextApprovedVacation($employee_id) {
         $stmt = $this->db->prepare("SELECT start_date, end_date FROM vacation_requests WHERE employee_id = ? AND status = 'Approved' AND start_date >= CURDATE() ORDER BY start_date ASC LIMIT 1");
         $stmt->bind_param("i", $employee_id);
@@ -204,7 +202,7 @@ public function cancelApprovedVacation($request_id) {
 
     // Obtener el historial de solicitudes de vacaciones junto con el tipo de vacaciones
     public function getVacationHistory($employee_id) {
-        $stmt = $this->db->prepare("SELECT vr.id, vr.start_date, vr.end_date, vr.status, vt.type_name 
+        $stmt = $this->db->prepare("SELECT vr.id, vr.start_date, vr.end_date, vr.status, vt.type_name, vr.is_half_day , vr.half_day_period 
         FROM vacation_requests vr 
         JOIN vacation_types vt ON vr.vacation_type_id = vt.id 
         WHERE vr.employee_id = ? 
@@ -213,6 +211,33 @@ public function cancelApprovedVacation($request_id) {
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+
+
+    public function getApprovedVacations($is_admin, $user_id = null) {
+        if ($is_admin) {
+            $sql = "SELECT users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_types.type_name 
+                    FROM vacation_requests 
+                    JOIN users ON vacation_requests.employee_id = users.id
+                    JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id 
+                    WHERE vacation_requests.status = 'Approved'";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        } else {
+            $sql = "SELECT start_date, end_date, vacation_types.type_name 
+                    FROM vacation_requests
+                    JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id 
+                    WHERE employee_id = ? 
+                    AND status = 'Approved'";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        }
+    
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+    
     
 
 }

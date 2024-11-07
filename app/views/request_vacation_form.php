@@ -21,15 +21,36 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="start_date" class="form-label">Startdatum:</label>
-                <input type="date" id="start_date" name="start_date" class="form-input" required>
-            </div>
+           <div class="form-group">
+    <label for="start_date" class="form-label">Startdatum:</label>
+    <input type="date" id="start_date" name="start_date" class="form-input" required>
+</div>
 
-            <div class="form-group">
-                <label for="end_date" class="form-label">Enddatum:</label>
-                <input type="date" id="end_date" name="end_date" class="form-input" required>
-            </div>
+<div class="form-group">
+    <label for="start_time" class="form-label">Startzeit:(Optional)</label>
+    <select id="start_time" name="start_time" class="form-input">
+        <option value="">Full Day</option>
+        <option value="08:00">Vormittag - 08:00</option>
+        <option value="12:00">Nachmittag - 12:00</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="end_date" class="form-label">Enddatum:</label>
+    <input type="date" id="end_date" name="end_date" class="form-input" required>
+</div>
+
+<div class="form-group">
+    <label for="end_time" class="form-label">Endzeit:(Optional)</label>
+    <select id="end_time" name="end_time" class="form-input">
+        <option value="">Full Day</option>
+        <option value="12:00">Vormittag - 12:00</option>
+        <option value="16:00">Nachmittag - 16:00</option>
+    </select>
+</div>
+
+
+        
 
             <div style="margin-top: 50px;">
                 <button type="submit" class="form-btn">Antrag abschicken</button>

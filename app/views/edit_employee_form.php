@@ -23,7 +23,7 @@
                 </select>
             </div>
 
-            <!-- Campos opcionales para la edición -->
+        
             <div class="form-group">
                 <label for="username" class="label">Neuer Benutzername (optional):</label>
                 <input type="text" name="username" id="username" class="form-input" value=" ">
@@ -56,7 +56,7 @@
             <div class="">
                 <button type="submit" class="edit-employee-btn">Änderungen speichern</button>
                 
-                <button type="button" class="cancel-btn" onclick="window.location.href='/vacation_app/app/views/admin_dashboard.php';">Cancelar</button>
+                <button type="button" class="cancel-btn" onclick="window.location.href='/vacation_app/app/views/admin_dashboard.php';">Abbrechen </button>
 
 
             </div>

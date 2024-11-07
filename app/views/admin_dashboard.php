@@ -54,7 +54,7 @@ $result = $conn->query($sql);
     <nav>
         <ul>
             <li><a href="admin_dashboard.php">Dashboard</a></li>
-            <li><a href="general_dashboard.php">Kalender anzeigen</a></li>
+            <li><a href="/vacation_app/local/index.php?action=generalDashboard">Kalender anzeigen</a></li>
             <li><a href="/vacation_app/local/index.php?action=manageRequests">Ansicht Offene Anträge</a></li>
             <li><a href="/vacation_app/local/index.php?action=editEmployee">Benutzerdaten bearbeiten</a></li>
 
@@ -66,7 +66,7 @@ $result = $conn->query($sql);
 
     </nav>
 
-    <h3 style="margin-left: 15px;">Übersicht alle Mitarbeiter</h3>
+    <h3 style="margin-left: 75px;">Übersicht alle Mitarbeiter</h3>
 
     <table>
     <thead>
@@ -75,7 +75,7 @@ $result = $conn->query($sql);
             <th>Department</th>           
             <th>Total Urlaub Tages</th>
             <th>Benutze Urlaub</th>
-            <th>Urlaubs pending</th>
+            <th>Anstehende Urlaubstage</th>
             <th>Krank</th>
             <th>Sonder Urlaub</th>
             
@@ -129,7 +129,7 @@ $result = $conn->query($sql);
             <input type="number" name="total_vacation_days" id="vacation_days" class="form-input" min="1" required>
         </div>
         
-        <div class="form-group">
+        <div class="">
             <button type="submit" class="assign-btn">Tage aktualisieren</button>
         </div>   
 
@@ -138,4 +138,13 @@ $result = $conn->query($sql);
 
 
 </body>
+<footer class="footer">
+    <p>&copy; <?php echo date("Y"); ?> 
+ICON Vernetzte Kommunikation GmbH. By Alvaro Barcelona Peralta.</p>
+    <nav class="footer-nav">
+        <a href="#">Kontakt</a> |
+        <a href="#">AGB</a> |
+        <a href="#">Datenschutz</a>
+    </nav>
+</footer>
 </html>

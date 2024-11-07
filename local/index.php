@@ -44,6 +44,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'signup') {
 
 
 
+
 //////////////////////////////////////
 
 
@@ -56,6 +57,16 @@ if (isset($_GET['action']) && $_GET['action'] == 'updateHolidays') {
 
 if (isset($_GET['action']) && $_GET['action'] == 'editEmployee') {
     $employeeController->editEmployee();
+    exit();
+}
+
+if (isset($_GET['action']) && $_GET['action'] == 'updateProfile') {  
+    $employeeController->updateProfile();
+    exit();
+}
+
+if (isset($_GET['action']) && $_GET['action'] == 'edit_profile') {
+    $employeeController->edit_profile();
     exit();
 }
 
@@ -82,13 +93,18 @@ if (isset($_GET['action'])&& $_GET['action'] =='approveRejectRequest' ) {
      $vacationController->approveRejectRequest();
      exit();
             
-    }
+}
 
 if (isset($_GET['action'])&& $_GET['action'] =='manageRequests' ) {
     $vacationController->manageRequests();
     exit();
                
-    }
+}
+if (isset($_GET['action']) && $_GET['action'] == 'generalDashboard') {
+    $vacationController->generalDashboard();
+    exit();
+}
+
 
 
 

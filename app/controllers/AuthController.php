@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/UserModel.php';
+require_once __DIR__ . '/../../core/Database.php';
 
 
 
@@ -77,7 +78,7 @@ class AuthController {
     
             // Verificar si el nombre de usuario ya existe
             if ($existingUser) {
-                echo "Este nombre de usuario ya está en uso.";
+                echo "Dieser Benutzername ist bereits in Betrieb.";
                 echo "<script>
                         setTimeout(function() {
                             window.location.href = '/vacation_app/local/auth/signup';
@@ -92,11 +93,11 @@ class AuthController {
                 $success = $userModel->createUser($username, $hashed_password, $role_id, $name, $mail, $department_id);
     
                 if ($success) {
-                    echo "Usuario registrado exitosamente.";
+                    echo "Benutzer erfolgreich registriert.";
                     require_once __DIR__ . '/../views/login_form.php';
                     exit();
                 } else {
-                    echo "Error al registrar el usuario.";
+                    echo "Fehler bei der Registrierung des Benutzers.";
                 }
             }
         } else {
