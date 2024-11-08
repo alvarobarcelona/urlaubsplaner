@@ -165,11 +165,11 @@ $pending_days = $total_days - $used_days;
                             <td><?php echo htmlspecialchars($vacation['half_day_period'] ?? 'Ganztag'); ?></td>
                             <td><?php echo htmlspecialchars($vacation['status']); ?></td>
                             <td><?php echo htmlspecialchars($vacation['type_name']); ?></td>
-                            <td>
+                            <td style="text-align: center;">
                                 <?php if ($vacation['status'] == 'Pending' || $vacation['status'] == 'Approved'): ?>
                                     <form action="/vacation_app/local/index.php?action=cancelVacation" method="post" style="display:inline;">
                                         <input type="hidden" name="request_id" value="<?php echo $vacation['id']; ?>">
-                                        <button type="submit" onclick="return confirm('Sind Sie sicher, dass Sie diese Bewerbung stornieren möchten?');">Stornieren</button>
+                                        <button style="margin: 10px auto;" type="submit" onclick="return confirm('Sind Sie sicher, dass Sie diese Abwesenheit stornieren möchten?');">Stornieren</button>
                                     </form>
                                 <?php else: ?>
                                     <span>-</span>

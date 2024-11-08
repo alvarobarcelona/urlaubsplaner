@@ -14,7 +14,7 @@
         <form action="/vacation_app/local/index.php?action=editEmployee" method="post" class="edit-employee-form">
             <!-- Seleccionar un Empleado -->
             <div class="form-group">
-                <label for="employee" class="form-label">Wählen Sie einen Mitarbeiter aus:</label>
+                <label for="employee" class="form-label">Wählen Sie einen Mitarbeiter aus:*</label>
                 <select username="employee_id" id="employee" class="form-select" required>
                     <option value="">-- Wählen Sie einen Mitarbeiter aus --</option>
                     <?php foreach ($employees as $employee): ?>
@@ -25,13 +25,13 @@
 
         
             <div class="form-group">
-                <label for="username" class="label">Neuer Benutzername (optional):</label>
+                <label for="username" class="label">Neuer Benutzername:</label>
                 <input type="text" name="username" id="username" class="form-input" value=" ">
             </div>
 
 
             <div class="form-group">
-                <label for="department">Neue Abteilung (optional):</label>
+                <label for="department">Neue Abteilung:</label>
                   <select name="department_id" id="department" class="form-select">
                         <option value="">-- Wählen Sie eine Abteilung aus --</option>
                     <?php foreach ($departments as $department): ?>
@@ -44,22 +44,21 @@
 
 
             <div class="form-group">
-                <label for="vacation_days" >Neue Gesamt-Urlaubstage (optional):</label>
+                <label for="vacation_days" >Neue Gesamt-Urlaubstage:</label>
                 <input type="number" name="total_vacation_days" id="vacation_days" class="form-input" min="1">
             </div>
 
             <div class="form-group">
-                <label for="password">Neues Passwort (optional):</label>
+                <label for="password">Neues Passwort:</label>
                 <input type="password" name="password" id="password" value="">
             </div>
 
-            <div class="">
+            <div class="group-btn-edit">
                 <button type="submit" class="edit-employee-btn">Änderungen speichern</button>
                 
                 <button type="button" class="cancel-btn" onclick="window.location.href='/vacation_app/app/views/admin_dashboard.php';">Abbrechen </button>
-
-
             </div>
+            <p>* Pflichtfeld</p>
         </form>
     </div>
 

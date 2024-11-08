@@ -1,52 +1,62 @@
-.body-login{
-   /* width: 60%;  
+.body-login {
+    /* width: 60%;  
     max-width: 500px;  */
     background-color: #fff;
     padding: 4rem;
     border-radius: 8px;
 }
 
-.body-login input[type="text"], 
-.body-login input[type="password"], 
+.body-login input[type="text"],
+.body-login input[type="password"],
 .body-edit-employee input[type="text"],
-.body-edit-employee input[type="password"]
- {
+.body-edit-employee input[type="password"] {
     width: 80%;
 }
 
+
+
 .body-signup input[type="text"],
-.body-signup input[type="password"]
-{
+.body-signup input[type="password"],
+.body-signup input[type="email"],
+.body-signup select
+ {
     width: 50%;
 }
 
+.signup-footer{
 
+    display: inline-flex;
+    justify-content: space-around;
+}
 /*  .body-signup, .body-edit-employee, .body-request-vacation {
     background: linear-gradient(135deg, #ececec, #dadada);
 } */
 
-.assign-vacations-container, .request-vacation-container{  
+.assign-vacations-container,
+.request-vacation-container {
     /* justify-content: center; */
-    margin: 40px auto;
+    margin: 75px auto;
     display: flex;
-     flex-direction: column; 
+    flex-direction: column;
     /* justify-content: center; */
     /* align-items: center; */
-    background-color:rgb(226, 224, 220);
-     padding: 20px; 
+    background-color: rgb(226, 224, 220);
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    text-align: center; 
+    text-align: center;
     max-width: 700px;
-    
-  
+
+
 }
 
- .assign-vacations-form {
+.assign-vacations-form {
     display: grid;
     justify-content: center;
-} 
-.form-select, .form-input {
+}
+
+.form-select,
+.form-input {
     width: 80%;
     padding: 5px;
     border-radius: 4px;
@@ -54,20 +64,21 @@
 }
 
 
-.edit-employee-container, .signup-container{
+.edit-employee-container,
+.signup-container {
     background-color: #fff;
-    padding: 40px;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 850px;
-    text-align: center;
-    margin: 30px auto;
+    /* text-align: center; */
+    margin: 70px auto;
 }
 
 
 /* Contenedor del formulario de login y signup */
-.login-container{
+.login-container {
     background-color: #fff;
     padding: 40px;
     border-radius: 8px;
@@ -75,27 +86,34 @@
     width: 100%;
     max-width: 400px;
     text-align: center;
-    margin:40px auto;
+    margin: 75px auto;
 }
+
 .assign-vacations-title {
     margin-bottom: 20px;
     font-size: 24px;
     text-align: center;
 }
+
 .assign-vacations-form {
     width: 100%;
 }
 
 /* Título del formulario */
-.login-title, .signup-title, .edit-employee-title{
+.login-title,
+.signup-title,
+.edit-employee-title {
     font-size: 24px;
     font-weight: bold;
     color: #2c3e50;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Formulario */
-.login-form, .signup-form, .edit-employee-form {
+.login-form,
+.signup-form,
+.edit-employee-form {
     display: flex;
     flex-direction: column;
 }
@@ -130,8 +148,12 @@
     outline: none;
 }
 
-button{
-background-color: #2980b9;
+.group-btn-edit{
+ text-align: center;
+}
+
+button {
+    background-color: #2980b9;
     color: #fff;
     padding: 10px 15px;
     border: none;
@@ -145,22 +167,25 @@ background-color: #2980b9;
 
 button:hover {
     background-color: #0056b3;
-} 
+}
 
 
 
 /* Estilo del enlace de registro/iniciar sesión */
-.signup-link, .login-link {
+.signup-link,
+.login-link {
     font-size: 14px;
     color: #555;
 }
 
-.signup-link a, .login-link a {
+.signup-link a,
+.login-link a {
     color: #2980b9;
     text-decoration: none;
 }
 
-.signup-link a:hover, .login-link a:hover {
+.signup-link a:hover,
+.login-link a:hover {
     text-decoration: underline;
 }
 
@@ -210,6 +235,8 @@ nav ul li a {
     font-size: 14px;
     letter-spacing: 0.05em;
     transition: color 0.3s ease;
+    text-decoration: none;
+    vertical-align: -moz-middle-with-baseline;
 }
 
 nav ul li a:hover {
@@ -231,7 +258,7 @@ nav ul li a:hover {
     color: #333;
 }
 
-.icon-user{
+.icon-user {
     width: 24px;
     height: 24px;
     margin: 0 4px 0 4px;
@@ -239,7 +266,7 @@ nav ul li a:hover {
 
 }
 
-.icon-close-session{
+.icon-close-session {
     width: 24px;
     height: 24px;
     margin: 0 4px -5px 4px;
@@ -251,23 +278,30 @@ nav ul li a:hover {
 
 
 .welcome-message {
-    font-size: 24px; /* Tamaño de fuente grande */
-    font-weight: bold; /* Texto en negrita */
-    color: #2c3e50; /* Un color oscuro para mejor visibilidad */
-    margin-left: auto; /* Alineado a la derecha */
-    margin-right: 20px; /* Un poco de espacio a la derecha */
+    font-size: 24px;
+    /* Tamaño de fuente grande */
+    font-weight: bold;
+    /* Texto en negrita */
+    color: #2c3e50;
+    /* Un color oscuro para mejor visibilidad */
+    margin-left: auto;
+    /* Alineado a la derecha */
+    margin-right: 20px;
+    /* Un poco de espacio a la derecha */
 }
 
 /* Estilo de tablas */
 table {
     width: 90%;
     border-collapse: collapse;
-    margin:auto;
+    margin: auto;
     margin-bottom: 20px;
     background-color: #fff;
 }
 
-table, th, td {
+table,
+th,
+td {
     border: 1px solid #ddd;
 }
 
@@ -304,22 +338,30 @@ tr:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #f8d7da; /* Rojo claro */
-    color: #721c24; /* Color del texto */
+    background-color: #f8d7da;
+    /* Rojo claro */
+    color: #721c24;
+    /* Color del texto */
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    display: none; /* Oculto por defecto */
+    display: none;
+    /* Oculto por defecto */
 }
+
 .alert-success {
-    background-color: #d4edda; /* Verde claro */
+    background-color: #d4edda;
+    /* Verde claro */
     color: #155724;
 }
+
 .alert-error {
-    background-color: #f8d7da; /* Rojo claro */
+    background-color: #f8d7da;
+    /* Rojo claro */
     color: #721c24;
 }
+
 .close-btn {
     float: right;
     font-weight: bold;
@@ -339,13 +381,16 @@ tr:hover {
 
 .vacation-container {
     display: flex;
-    justify-content: center; /* Espacio entre las cajas */
-    gap: 20px; /* Espacio entre los div */
+    justify-content: center;
+    /* Espacio entre las cajas */
+    gap: 20px;
+    /* Espacio entre los div */
     margin-bottom: 20px;
 }
 
 
-.vacation-summary, .next-vacation {
+.vacation-summary,
+.next-vacation {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     padding: 20px;
@@ -400,11 +445,11 @@ h3 {
 
 #calendar {
     max-width: 1000px;
-    margin: 0 auto; 
+    margin: 0 auto;
     margin-bottom: 50px;
-    
-    
-} 
+
+
+}
 
 .body-profile {
     display: flex;
@@ -458,7 +503,7 @@ h3 {
 
 .footer {
     background-color: #f1f1f1;
-    text-align: center;   
+    text-align: center;
     bottom: 0;
     width: 100%;
 }
@@ -468,6 +513,7 @@ h3 {
     margin: 0 10px;
     text-decoration: none;
 }
+
 .footer-nav a:hover {
     text-decoration: underline;
 }

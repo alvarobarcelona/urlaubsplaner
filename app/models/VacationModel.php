@@ -76,7 +76,7 @@ class VacationModel {
         // Calcular la diferencia en días
         $start = new DateTime($start_date);
         $end = new DateTime($end_date);
-        $days_requested = $end->diff($start)->days;  // Incluye el primer día
+        $days_requested = $end->diff($start)->days + 1;  // Incluye el primer día
     
         // Determinar la columna a actualizar dependiendo del tipo de vacaciones
         if ($vacation_type_id == 2) {  // Sonder Urlaub (vacaciones especiales)
@@ -141,7 +141,8 @@ public function cancelApprovedVacation($request_id) {
         // Calcular la diferencia en días entre las fechas
         $start = new DateTime($start_date);
         $end = new DateTime($end_date);
-        $days_requested = $end->diff($start)->days;  
+        $interval = $start->diff($end);
+        $days_requested = $interval->days + 1;
     
    
     // Determinar la columna a actualizar dependiendo del tipo de vacaciones

@@ -107,6 +107,72 @@ class AuthController {
             require_once __DIR__ . '/../views/signup_form.php'; // Mostrar el formulario de registro
         }
     }
+
+// NO SOLO CREAR EL REQUEST EN LA TABLA QUE SERA SIEMPRE APROBADO PORQUE ES ADMIN SINO ACTUALIZAR LOS DIAS EN LA TABLA USERS
+    public function createVacationRequest() {
+
+        $userModel = new UserModel();
+        $vacationModel = new VacationModel();
+
+        // Verificar que el usuario es administrador
+        if ($_SESSION['role_id'] != 1) {
+            header("Location: /vacation_app/local/index.php?action=login");
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $employee_id = $_POST['employee_id'];
+        $vacation_type_id = $_POST['vacation_type_id'];
+        $start_date = $_POST['start_date'];
+        $end_date = $_POST['end_date'];
+        $start_time = $_POST['start_time'];
+        $end_time = $_POST['end_time'];
+        
+
+
+
+        $start_datetime = $start_date . ' ' . $start_time;
+        $end_datetime = $end_date . ' ' . $end_time;
+
+            // Determinar si es medio día
+        if (($start_time === '08:00' && $end_time === '12:00') || 
+            ($start_time === '12:00' && $end_time === '16:00')) {
+                $is_half_day = 0.5;
+                $half_day_period = ($start_time === '08:00') ? 'Vormittag' : 'Nachmittag';
+        } else {
+        // Día completo
+                $is_half_day = 0;
+                $half_day_period = null;
+        }
+        $success = $userModel->createVacationRequest($employee_id, $vacation_type_id, $start_datetime, $end_datetime, $is_half_day , $half_day_period);
+        
+
+        
+
+        // Llamar al modelo para crear la solicitud sin necesidad de aprobación
+        if ($success) {
+            $vacationModel->updateVacationDays($employee_id, $start_date, $end_date, $vacation_type_id);
+            $_SESSION['success_message'] = "Die Daten wurden korrekt aggregiert";
+            require_once __DIR__ .'/../views/admin_dashboard.php';
+            
+        } else {
+            $_SESSION['error_message'] = "Einfügungsfehler.";
+            require_once __DIR__ .'/../views/admin_request_form.php';
+        }
+        exit();
+    }else{
+
+        $vacation_types = $vacationModel->getVacationTypes();
+        $employees = $userModel->getAllEmployees(); 
+        $departments = $userModel->getAllDepartments();   
+
+        require_once __DIR__ . '/../views/admin_request_form.php'; 
+
+    }
+    }
+
+
+
     
 
 public function logout() {

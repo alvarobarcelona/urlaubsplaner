@@ -42,6 +42,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'signup') {
     exit();
 }
 
+if (isset($_GET['action']) && $_GET['action'] == 'createVacationRequestAdmin') {
+    $authController = new AuthController();
+    $authController->createVacationRequest();
+    exit();
+}
+
+
 
 
 
