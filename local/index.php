@@ -7,20 +7,6 @@ require_once __DIR__ . '/../app/controllers/VacationController.php';
     session_start();
 }
 
-/*
-if (!isset($_SESSION['user_id'])) {
-    // Si no hay una sesión iniciada, redirige al login
-    header("Location: /vacation_app/local/index.php?action=login");
-    exit();
-}
-if ($_SESSION['role_id'] != 1) {
-    // Si no es administrador, redirige al dashboard de empleado o al login
-    header("Location: /vacation_app/app/views/employee_dashboard.php");
-    exit();
-}
- */
-
-
 
 $authController = new AuthController();
 
@@ -109,6 +95,16 @@ if (isset($_GET['action'])&& $_GET['action'] =='manageRequests' ) {
 }
 if (isset($_GET['action']) && $_GET['action'] == 'generalDashboard') {
     $vacationController->generalDashboard();
+    exit();
+}
+
+if (isset($_GET['action']) && $_GET['action'] == 'showRequestHistory') {
+    $vacationController->showRequestHistory();
+    exit();
+}
+
+if (isset($_GET['action']) && $_GET['action'] == 'revertRequest') {  
+    $vacationController->revertRequest();
     exit();
 }
 

@@ -59,8 +59,6 @@ class VacationController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $request_id = $_POST['request_id'];  // ID de la solicitud de vacaciones
             $action = $_POST['action'];  // Acción de aprobar o rechazar
-
-            // Determinar el nuevo estado
             $new_status = ($action == 'approve') ? 'Approved' : 'Rejected';
 
 
@@ -70,8 +68,12 @@ class VacationController
 
             if ($new_status == 'Approved') {
 
+                $is_half_day = $request['is_half_day'] == 0.5;
+
                 // Actualizar los días de vacaciones del empleado solo si se aprueba
-                $vacationModel->updateVacationDays($request['employee_id'], $request['start_date'], $request['end_date'], $request['vacation_type_id']);
+                $vacationModel->updateVacationDays($request['employee_id'], $request['start_date'], $request['end_date'], $request['vacation_type_id'],$is_half_day);
+
+
             }
 
             // Actualizar el estado de la solicitud
@@ -92,6 +94,8 @@ class VacationController
             exit();
         }
     }
+    
+    
     // FUNCIONA NO TOCAR
     // Método para procesar la solicitud de vacaciones
     public function requestVacation()
@@ -174,4 +178,52 @@ class VacationController
             exit();
         }
     }
+
+
+
+    public function showRequestHistory()
+    {
+
+        $vacationModel = new VacationModel();
+
+        if ($_SESSION['role_id'] != 1) {
+            header("Location: /vacation_app/local/index.php?action=login");
+            exit();
+        }
+
+        // Obtener la solicitud por ID para revertir los cambios en la tabla de usuarios
+        $requests = $this->vacationModel->getAllRequests();
+
+        require_once __DIR__ . '/../views/admin_request_history.php';
+    }
+
+    public function revertRequest() {
+        session_start();
+    
+        // Verificar que el usuario es administrador
+        if ($_SESSION['role_id'] != 1) {
+            header("Location: /vacation_app/local/index.php?action=login");
+            exit();
+        }
+    
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $request_id = $_POST['request_id'];
+            $vacationModel = new VacationModel();
+    
+            // Revertir la solicitud aprobada y actualizar los días en la tabla de usuarios
+            $success = $vacationModel->cancelApprovedVacation($request_id);
+    
+            if ($success) {
+                $_SESSION['success_message'] = "La solicitud ha sido revertida exitosamente.";
+            } else {
+                $_SESSION['error_message'] = "Error al revertir la solicitud.";
+            }
+    
+            header("Location: /vacation_app/local/index.php?action=showRequestHistory");
+            exit();
+        }
+    }
+
+
+
 }

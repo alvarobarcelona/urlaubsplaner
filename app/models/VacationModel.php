@@ -136,7 +136,7 @@ public function cancelApprovedVacation($request_id) {
 
 
 //aqui debo actualizar el sql poruqe hay que agregar los dias de krank y los sonder urlaub si la solicitud es una de las dos
-    public function updateVacationDays($employee_id, $start_date, $end_date, $vacation_type_id) {
+    public function updateVacationDays($employee_id, $start_date, $end_date, $vacation_type_id, $is_half_day = false) {
         
         // Calcular la diferencia en días entre las fechas
         $start = new DateTime($start_date);
@@ -144,6 +144,10 @@ public function cancelApprovedVacation($request_id) {
         $interval = $start->diff($end);
         $days_requested = $interval->days + 1;
     
+
+        if ($is_half_day) {
+            $days_requested = 0.5;
+        }
    
     // Determinar la columna a actualizar dependiendo del tipo de vacaciones
     if ($vacation_type_id == 3) {  
@@ -157,7 +161,7 @@ public function cancelApprovedVacation($request_id) {
     // Construir la consulta SQL dinámica
     $sql = "UPDATE users SET $column_to_update = $column_to_update + ? WHERE id = ?";
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("ii", $days_requested, $employee_id);
+    $stmt->bind_param("di", $days_requested, $employee_id);
 
     return $stmt->execute();
     }
@@ -237,6 +241,18 @@ public function cancelApprovedVacation($request_id) {
         }
     
         return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+
+    public function getAllRequests() {
+        $sql = "SELECT vacation_requests.id, users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_requests.status, vacation_types.type_name
+                FROM vacation_requests
+                JOIN users ON vacation_requests.employee_id = users.id
+                JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id
+                ORDER BY vacation_requests.start_date DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
     
     

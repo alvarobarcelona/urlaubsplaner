@@ -18,16 +18,16 @@
 .body-signup input[type="text"],
 .body-signup input[type="password"],
 .body-signup input[type="email"],
-.body-signup select
- {
+.body-signup select {
     width: 50%;
 }
 
-.signup-footer{
+.signup-footer {
 
     display: inline-flex;
     justify-content: space-around;
 }
+
 /*  .body-signup, .body-edit-employee, .body-request-vacation {
     background: linear-gradient(135deg, #ececec, #dadada);
 } */
@@ -89,6 +89,10 @@
     margin: 75px auto;
 }
 
+.logout-link {
+    display: inline !important;
+}
+
 .assign-vacations-title {
     margin-bottom: 20px;
     font-size: 24px;
@@ -148,8 +152,8 @@
     outline: none;
 }
 
-.group-btn-edit{
- text-align: center;
+.group-btn-edit {
+    text-align: center;
 }
 
 button {
@@ -200,16 +204,6 @@ body {
     padding: 0;
 }
 
-/* .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-} */
-
-/* Barra de navegación */
 nav {
     background-color: #007bff;
     padding: 15px 20px;
@@ -240,7 +234,57 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #ffdd57;
+    color: #cab813;
+}
+
+
+.nav-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.nav-menu li {
+    position: relative;
+    margin-right: 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    display: block;
+}
+
+.nav-menu a:hover {
+    color: #cab813;
+}
+
+/* Dropdown Toggle */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #007bff;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-menu li {
+    width: 200px;
+}
+
+.dropdown-menu li a {
+    padding: 10px;
+    color: black;
 }
 
 
@@ -279,15 +323,10 @@ nav ul li a:hover {
 
 .welcome-message {
     font-size: 24px;
-    /* Tamaño de fuente grande */
     font-weight: bold;
-    /* Texto en negrita */
     color: #2c3e50;
-    /* Un color oscuro para mejor visibilidad */
     margin-left: auto;
-    /* Alineado a la derecha */
     margin-right: 20px;
-    /* Un poco de espacio a la derecha */
 }
 
 /* Estilo de tablas */
@@ -479,27 +518,6 @@ h3 {
     font-size: 1.1rem;
     margin: 0.5rem 0;
 }
-
-/* .edit-profile-btn {
-    display: block;
-    width: fit-content;
-    margin: 1rem auto 0;
-    padding: 0.5rem 1rem;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.edit-profile-btn:hover {
-    background-color: #0056b3;
-} */
-
-
-
 
 .footer {
     background-color: #f1f1f1;
