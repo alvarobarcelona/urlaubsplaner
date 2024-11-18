@@ -1,9 +1,9 @@
 .body-login {
     /* width: 60%;  
-    max-width: 500px;  */
-    background-color: #fff;
+    max-width: 500px; 
+     background-color: #fff;
     padding: 4rem;
-    border-radius: 8px;
+    border-radius: 8px; */
 }
 
 .body-login input[type="text"],
@@ -25,27 +25,32 @@
 .signup-footer {
 
     display: inline-flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
-/*  .body-signup, .body-edit-employee, .body-request-vacation {
-    background: linear-gradient(135deg, #ececec, #dadada);
-} */
 
-.assign-vacations-container,
 .request-vacation-container {
-    /* justify-content: center; */
-    margin: 75px auto;
+
+    margin: 80px auto; 
+    background-color: rgb(226, 224, 220);
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 700px;
+    padding: 20px;
+}
+
+.assign-vacations-container {
+    margin: 20px auto;
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
     background-color: rgb(226, 224, 220);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     max-width: 700px;
+
 
 
 }
@@ -86,7 +91,7 @@
     width: 100%;
     max-width: 400px;
     text-align: center;
-    margin: 75px auto;
+    margin: 14rem auto;
 }
 
 .logout-link {
@@ -486,22 +491,19 @@ h3 {
     max-width: 1000px;
     margin: 0 auto;
     margin-bottom: 50px;
-
-
 }
 
 .body-profile {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     background-color: #f4f4f4;
     margin: 0;
 }
 
 .profile-container {
+    display: block;
+    margin: 100px auto;
     width: 50%;
-    max-width: 600px;
+    /* max-width: 600px; */
     background-color: #fff;
     padding: 2rem;
     border-radius: 8px;
@@ -524,6 +526,7 @@ h3 {
     text-align: center;
     bottom: 0;
     width: 100%;
+    position: absolute;
 }
 
 .footer-nav a {

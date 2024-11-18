@@ -50,7 +50,6 @@ $user_name = $_SESSION['username'];
 
     </nav>
 <body class="body-edit-employee">
-
     <div class="edit-employee-container">
         <h2 class="edit-employee-title">Wählen Sie einen Mitarbeiter aus, um sein Profil zu bearbeiten</h2>
 
@@ -104,6 +103,14 @@ $user_name = $_SESSION['username'];
             <p>* Pflichtfeld</p>
         </form>
     </div>
-
 </body>
+<footer class="footer">
+    <p>&copy; <?php echo date("Y"); ?>
+        ICON Vernetzte Kommunikation GmbH. By Alvaro Barcelona Peralta.</p>
+    <nav class="footer-nav">
+        <a href="#">Kontakt</a> |
+        <a href="#">AGB</a> |
+        <a href="#">Datenschutz</a>
+    </nav>
+</footer>
 </html>

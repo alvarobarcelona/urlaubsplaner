@@ -68,11 +68,11 @@ if (isset($_SESSION['error_message'])) {
 </nav>
 
 <body>
-    <h2 style="margin-left: 95px;">Historial de Solicitudes de Vacaciones</h2>
+    <h2 style="margin-left: 95px;">Verlauf der Anträge</h2>
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>Mitarbeiter</th>
                 <th>Art des Antrags</th>
                 <th>Startdatum</th>
@@ -87,7 +87,7 @@ if (isset($_SESSION['error_message'])) {
             if (!empty($requests)) {
                 foreach ($requests as $request) { ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($request['id']); ?></td>
+                        <!-- <td><?php echo htmlspecialchars($request['id']); ?></td> -->
                         <td><?php echo htmlspecialchars($request['username']); ?></td>
                         <td><?php echo htmlspecialchars($request['type_name']); ?></td>
                         <td><?php echo htmlspecialchars($request['start_date']); ?></td>

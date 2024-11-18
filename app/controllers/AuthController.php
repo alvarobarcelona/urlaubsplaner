@@ -28,6 +28,7 @@ class AuthController {
                 $_SESSION['role_id'] = $user['role_id']; //muy importante , ya que en cada pagina compruebo que el rol sea el correcto para evitar que un trabajador pueda ver cosas de un admin.
     
             
+                
                 // Redirigir según el rol del usuario
                 if ($user['role_id'] == 1) {                  
                     header("Location: /vacation_app/app/views/admin_dashboard.php");
@@ -39,7 +40,8 @@ class AuthController {
                     echo "Rol no reconocido.<br>";
                 }
             } else {
-                echo "Usuario o contraseña incorrectos.<br>";
+                $_SESSION['error_message'] = "Falsches Login oder Passwort.";
+                echo "<script> alert('Falsches Benutzername oder Passwort.') </script>";
                 require_once __DIR__ . '/../views/login_form.php';
             }
         } else {

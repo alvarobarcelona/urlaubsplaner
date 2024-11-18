@@ -30,7 +30,7 @@ $employee_id = $_SESSION['user_id'];
 $employee = $vacationModel->getEmployeeVacation($employee_id);
 
 
-//  Obtener el historial de solicitudes de vacaciones
+//  Obtener el historial de solicitudes de vacaciones de los usuarios
 $vacation_history = $vacationModel->getVacationHistory($employee_id);
 
 // Obtener las próximas vacaciones aprobadas
@@ -80,7 +80,7 @@ $pending_days = $total_days - $used_days;
         <ul>
             <li><a href="employee_dashboard.php">Dashboard</a></li>
             <li><a href="/vacation_app/local/index.php?action=generalDashboard">Mein Kalender</a></li>
-            <li><a href="/vacation_app/local/index.php?action=requestVacation">Neue Abwesenheit</a></li>
+            <li><a href="/vacation_app/local/index.php?action=requestVacation">Neue Abwesenheit eintragen</a></li>
             <div style="margin-left: auto;">
                 <span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon-close-session">
                         <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
@@ -117,6 +117,7 @@ $pending_days = $total_days - $used_days;
                     // Convertir las fechas a formato europeo (día/mes/año)
                     $next_vacation_start = DateTime::createFromFormat('Y-m-d', $vacation['start_date'])->format('d/m/Y');
                     $next_vacation_end = DateTime::createFromFormat('Y-m-d', $vacation['end_date'])->format('d/m/Y');
+                    $created_at = DateTime::createFromFormat('Y-m-d H:i:s', $vacation['created_at'])->format('d/m/Y H:i');
 
                     // var_dump($vacation);
                     ?>
@@ -149,6 +150,7 @@ $pending_days = $total_days - $used_days;
                     <th>Zeitraum</th>
                     <th>Status</th>
                     <th>Art des Antrags</th>
+                    <th>Erstellt am </th>
                     <th>Aktionen</th>
                 </tr>
             </thead>
@@ -165,6 +167,7 @@ $pending_days = $total_days - $used_days;
                             <td><?php echo htmlspecialchars($vacation['half_day_period'] ?? 'Ganztag'); ?></td>
                             <td><?php echo htmlspecialchars($vacation['status']); ?></td>
                             <td><?php echo htmlspecialchars($vacation['type_name']); ?></td>
+                            <td><?php echo htmlspecialchars($created_at); ?></td>
                             <td style="text-align: center;">
                                 <?php if ($vacation['status'] == 'Pending' || $vacation['status'] == 'Approved'): ?>
                                     <form action="/vacation_app/local/index.php?action=cancelVacation" method="post" style="display:inline;">

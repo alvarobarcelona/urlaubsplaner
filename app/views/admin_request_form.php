@@ -113,4 +113,13 @@ $user_name = $_SESSION['username'];
         </form>
     </div>
 </body>
+<footer class="footer">
+    <p>&copy; <?php echo date("Y"); ?>
+        ICON Vernetzte Kommunikation GmbH. By Alvaro Barcelona Peralta.</p>
+    <nav class="footer-nav">
+        <a href="#">Kontakt</a> |
+        <a href="#">AGB</a> |
+        <a href="#">Datenschutz</a>
+    </nav>
+</footer>
 </html>

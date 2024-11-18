@@ -59,7 +59,7 @@
             </div>
 
             <!-- Botón de registro -->
-            <button type="submit" class="signup-btn">Registrieren</button>
+            <button type="submit" class="">Registrieren</button>
             <div class="signup-footer">
                 <p>* Pflichtfeld</p>
                 <p class="login-link">Haben Sie schon ein Konto? <a href="/vacation_app/app/views/login_form.php">Hier einloggen</a></p>

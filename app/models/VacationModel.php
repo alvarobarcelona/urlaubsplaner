@@ -207,7 +207,7 @@ public function cancelApprovedVacation($request_id) {
 
     // Obtener el historial de solicitudes de vacaciones junto con el tipo de vacaciones
     public function getVacationHistory($employee_id) {
-        $stmt = $this->db->prepare("SELECT vr.id, vr.start_date, vr.end_date, vr.status, vt.type_name, vr.is_half_day , vr.half_day_period 
+        $stmt = $this->db->prepare("SELECT vr.id, vr.start_date, vr.end_date, vr.status, vt.type_name, vr.is_half_day, vr.half_day_period, vr.created_at 
         FROM vacation_requests vr 
         JOIN vacation_types vt ON vr.vacation_type_id = vt.id 
         WHERE vr.employee_id = ? 
