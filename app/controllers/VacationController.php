@@ -41,11 +41,11 @@ class VacationController
 
         // Obtener todas las solicitudes pendientes
         $vacationModel = new VacationModel();
-        $requests = $vacationModel->getPendingRequests();
+        $requestsPending = $vacationModel->getPendingRequests();
 
-        if ($requests === null || empty($requests)) {
+        if ($requestsPending === null || empty($requestsPending)) {
             $_SESSION['error_message'] = "Es wurden keine offenen Anträge gefunden.";
-            $requests = [];  // Asegurarse de que $requests no esté nulo
+            $requestsPending = [];  // Asegurarse de que $requests no esté nulo
         }
 
         // Cargar la vista con las solicitudes (la vista se encargará de mostrar los mensajes)
@@ -192,7 +192,7 @@ class VacationController
         }
 
         // Obtener la solicitud por ID para revertir los cambios en la tabla de usuarios
-        $requests = $this->vacationModel->getAllRequests();
+        $allRequests = $this->vacationModel->getAllRequests();
 
         require_once __DIR__ . '/../views/admin_request_history.php';
     }

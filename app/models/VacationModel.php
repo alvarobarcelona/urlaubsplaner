@@ -20,7 +20,7 @@ class VacationModel {
     public function getPendingRequests() {
         // Consulta SQL para obtener las solicitudes pendientes junto con tipo de vacaciones y departamento
         $sql = "SELECT vacation_requests.id, users.username, vacation_requests.start_date, vacation_requests.end_date, 
-                       vacation_requests.status, vacation_types.type_name, departments.department_name
+                       vacation_requests.status, vacation_requests.created_at , vacation_types.type_name, departments.department_name
                 FROM vacation_requests
                 JOIN users ON vacation_requests.employee_id = users.id
                 JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id
@@ -50,13 +50,14 @@ class VacationModel {
 
     public function getEmployeesVacationData() {
         $sql = $this->db->prepare("
-            SELECT 
+            SELECT
                 u.username, 
                 u.total_vacation_days, 
                 u.used_vacation_days, 
                 d.department_name,
                 u.sick_days, 
-                u.special_holidays_days
+                u.special_holidays_days,
+                SUM(vr.is_half_day) AS total_half_days
             FROM 
                 users u
             LEFT JOIN 
@@ -245,7 +246,7 @@ public function cancelApprovedVacation($request_id) {
 
 
     public function getAllRequests() {
-        $sql = "SELECT vacation_requests.id, users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_requests.status, vacation_types.type_name
+        $sql = "SELECT vacation_requests.id, users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_requests.status, vacation_requests.created_at , vacation_types.type_name
                 FROM vacation_requests
                 JOIN users ON vacation_requests.employee_id = users.id
                 JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id

@@ -37,7 +37,6 @@ $vacation_history = $vacationModel->getVacationHistory($employee_id);
 $next_vacation = $vacationModel->getNextApprovedVacation($employee_id);
 // var_dump($employee);
 $total_days = $employee['total_vacation_days'] ?? 0;
-var_dump($total_days);
 
 $used_days = $employee['used_vacation_days'] ?? 0;
 $total_sick_days = $employee['sick_days'] ?? 0;
@@ -73,6 +72,7 @@ $pending_days = $total_days - $used_days;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mitarbeiter Übersicht</title>
     <link rel="stylesheet" href="/vacation_app/local/css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
@@ -81,123 +81,123 @@ $pending_days = $total_days - $used_days;
             <li><a href="employee_dashboard.php">Dashboard</a></li>
             <li><a href="/vacation_app/local/index.php?action=generalDashboard">Mein Kalender</a></li>
             <li><a href="/vacation_app/local/index.php?action=requestVacation">Neue Abwesenheit eintragen</a></li>
-            <div style="margin-left: auto;">
-                <span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon-close-session">
-                        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
-                    </svg> <a style="color: black;" href="/vacation_app/local/index.php?action=logout"> Ausloggen</a></span>
-                <a href="/vacation_app/local/index.php?action=edit_profile"><span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon-user">
+
+            <div class="ml-auto flex items-center space-x-4">
+                <a href="/vacation_app/local/index.php?action=edit_profile" class="flex items-center">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon-user">
                             <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
-                        </svg> Hi,<?php echo htmlspecialchars(' ' . $user_name); ?></span></a>
+                    </svg> <b>Hallo,</b><?php echo htmlspecialchars(' ' . $user_name); ?>  
+                </a>
+                <a href="/vacation_app/local/index.php?action=logout"  class="items-center flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon-close-session">
+                        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+                    </svg>
+                    <b>Ausloggen</b>
+                </a>
             </div>
         </ul>
 
     </nav>
 
-    <h2 class="dashboard-title">Willkommen beim Employee Dashboard</h2>
+    <div class="container mx-auto mt-8 space-y-8">
+    <h2 class="text-2xl font-bold text-gray-700 text-center">Willkommen beim Employee Dashboard</h2>
 
     <!-- Resumen del estado de vacaciones -->
-    <div class="vacation-container">
-        <div class="vacation-summary">
-            <h3>Zusammenfassung der Anträge</h3>
-            <div class="vacation-stats">
-                <p><strong>Urlaubstage total:</strong> <span><?php echo $total_days; ?></span></p>
-                <p><strong>Benutzte Tage:</strong> <span><?php echo $used_days; ?></span></p>
-                <p><strong>Verbleibende Tage:</strong> <span><?php echo $pending_days; ?></span></p>
-                <p><strong>Krank:</strong> <span><?php echo $total_sick_days; ?></span></p>
-                <p><strong>Sonderurlaub:</strong> <span><?php echo $total_special_holidays_days; ?></span></p>
+    <div class="flex flex-wrap justify-center gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full sm:w-1/2 lg:w-1/3">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Zusammenfassung der Anträge</h3>
+            <div class="space-y-2">
+                <p><strong>Urlaubstage total:</strong> <span class="text-blue-600"><?php echo $total_days; ?></span></p>
+                <p><strong>Benutzte Tage:</strong> <span class="text-blue-600"><?php echo $used_days; ?></span></p>
+                <p><strong>Verbleibende Tage:</strong> <span class="text-blue-600"><?php echo $pending_days; ?></span></p>
+                <p><strong>Krank:</strong> <span class="text-blue-600"><?php echo $total_sick_days; ?></span></p>
+                <p><strong>Sonderurlaub:</strong> <span class="text-blue-600"><?php echo $total_special_holidays_days; ?></span></p>
             </div>
         </div>
 
         <!-- Próximas vacaciones aprobadas -->
-        <div class="next-vacation">
-            <h3>Nächstes Ereignis</h3>
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full sm:w-1/2 lg:w-1/3">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Nächstes Ereignis</h3>
             <?php if ($next_vacation): ?>
-                <div class="vacation-dates">
-                    <?php
-                    // Convertir las fechas a formato europeo (día/mes/año)
-                    $next_vacation_start = DateTime::createFromFormat('Y-m-d', $vacation['start_date'])->format('d/m/Y');
-                    $next_vacation_end = DateTime::createFromFormat('Y-m-d', $vacation['end_date'])->format('d/m/Y');
-                    $created_at = DateTime::createFromFormat('Y-m-d H:i:s', $vacation['created_at'])->format('d/m/Y H:i');
-
-                    // var_dump($vacation);
-                    ?>
-
-                    <?php if (!empty($vacation) && isset($vacation['type_name'])): ?>
-                        <p><strong>Art: </strong> <span><?php echo htmlspecialchars($vacation['type_name']); ?></span></p>
-                    <?php else: ?>
-                        <p><strong>Art: </strong> <span>N/A</span></p>
-                    <?php endif; ?>
-                    <p><strong>Startseite: </strong> <span><?php echo htmlspecialchars($next_vacation_start); ?></span></p>
-                    <p><strong>Ende: </strong> <span><?php echo htmlspecialchars($next_vacation_end); ?></span></p>
-
+                <div class="space-y-2">
+                    <p><strong>Art: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($vacation['type_name'] ?? 'N/A'); ?></span></p>
+                    <p><strong>Startseite: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($next_vacation_start); ?></span></p>
+                    <p><strong>Ende: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($next_vacation_end); ?></span></p>
                 </div>
             <?php else: ?>
-                <p class="no-vacation-msg">Sie haben keine kommenden genehmigten Anträge.</p>
+                <p class="text-red-600">Sie haben keine kommenden genehmigten Anträge.</p>
             <?php endif; ?>
         </div>
     </div>
 
-
-
     <!-- Historial de solicitudes de vacaciones -->
-    <div class="vacation-history">
-        <h3 style="margin-left: 77px;">Verlauf der Anträge:</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Startdatum</th>
-                    <th>Enddatum</th>
-                    <th>Zeitraum</th>
-                    <th>Status</th>
-                    <th>Art des Antrags</th>
-                    <th>Erstellt am </th>
-                    <th>Aktionen</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($vacation_history)): ?>
-                    <?php foreach ($vacation_history as $vacation):
-                        // Convertir las fechas a formato europeo (día/mes/año)
-                        $start_date = DateTime::createFromFormat('Y-m-d', $vacation['start_date'])->format('d/m/Y');
-                        $end_date = DateTime::createFromFormat('Y-m-d', $vacation['end_date'])->format('d/m/Y');
-                    ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($start_date); ?></td>
-                            <td><?php echo htmlspecialchars($end_date); ?></td>
-                            <td><?php echo htmlspecialchars($vacation['half_day_period'] ?? 'Ganztag'); ?></td>
-                            <td><?php echo htmlspecialchars($vacation['status']); ?></td>
-                            <td><?php echo htmlspecialchars($vacation['type_name']); ?></td>
-                            <td><?php echo htmlspecialchars($created_at); ?></td>
-                            <td style="text-align: center;">
-                                <?php if ($vacation['status'] == 'Pending' || $vacation['status'] == 'Approved'): ?>
-                                    <form action="/vacation_app/local/index.php?action=cancelVacation" method="post" style="display:inline;">
-                                        <input type="hidden" name="request_id" value="<?php echo $vacation['id']; ?>">
-                                        <button style="margin: 10px auto;" type="submit" onclick="return confirm('Sind Sie sicher, dass Sie diese Abwesenheit stornieren möchten?');">Stornieren</button>
-                                    </form>
-                                <?php else: ?>
-                                    <span>-</span>
-                                <?php endif; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-lg font-semibold text-gray-700 mb-4">Verlauf der Anträge</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto border-collapse border border-gray-200">
+                <thead class="bg-gray-100">
                     <tr>
-                        <td colspan="5">Sie haben keine ausstehenden Anträge</td>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Startdatum</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Enddatum</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Zeitraum</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Art des Antrags</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Erstellt am</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Aktionen</th>
                     </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php if (!empty($vacation_history)): ?>
+                        <?php foreach ($vacation_history as $vacation): 
+                            
+                            $start_date = DateTime::createFromFormat('Y-m-d', $vacation['start_date'])->format('d/m/Y');
+                            $end_date = DateTime::createFromFormat('Y-m-d', $vacation['end_date'])->format('d/m/Y');
+                            $created_at = DateTime::createFromFormat('Y-m-d H:i:s', $vacation['created_at'])->format('d/m/Y H:i');
+                            
+                            
+                            ?>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($start_date); ?></td>
+                                <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($end_date); ?></td>
+                                <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['half_day_period'] ?? 'Ganztag'); ?></td>
+                                <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['status']); ?></td>
+                                <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['type_name']); ?></td>
+                                <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($created_at); ?></td>
+                                <td class="border border-gray-300 px-4 py-2 text-center">
+                                    <?php if ($vacation['status'] == 'Pending' || $vacation['status'] == 'Approved'): ?>
+                                        <form action="/vacation_app/local/index.php?action=cancelVacation" method="post">
+                                            <input type="hidden" name="request_id" value="<?php echo $vacation['id']; ?>">
+                                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                                    onclick="return confirm('Sind Sie sicher, dass Sie diese Abwesenheit stornieren möchten?');">
+                                                Stornieren
+                                            </button>
+                                        </form>
+                                    <?php else: ?>
+                                        <span>-</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="7" class="text-center text-gray-500 py-4">Sie haben keine ausstehenden Anträge</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
+</div>
 
-</body>
 
-<footer class="footer">
-    <p>&copy; <?php echo date("Y"); ?>
-        ICON Vernetzte Kommunikation GmbH. By Alvaro Barcelona Peralta.</p>
-    <nav class="footer-nav">
-        <a href="#">Kontakt</a> |
-        <a href="#">AGB</a> |
-        <a href="#">Datenschutz</a>
+
+<footer class="bg-gray-200 text-center pt-4 pb-4 mt-8 ">
+    <p class="text-sm text-gray-600">&copy; <?php echo date("Y"); ?> ICON Vernetzte Kommunikation GmbH. By Alvaro Barcelona Peralta.</p>
+    <nav class="space-x-4 text-sm text-gray-600">
+        <a href="#" class="hover:underline">Kontakt</a>
+        <a href="#" class="hover:underline">AGB</a>
+        <a href="#" class="hover:underline">Datenschutz</a>
     </nav>
 </footer>
-
+</body>
 </html>
