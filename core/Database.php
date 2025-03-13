@@ -1,7 +1,8 @@
 
 <?php
 
-class Database {
+class Database
+{
     private static $instance = null;
     private $conn;
 
@@ -10,16 +11,18 @@ class Database {
     private $pass = 'root';
     private $name = 'vacation_db';
 
-    private function __construct() {
+    private function __construct()
+    {
         $this->conn = new mysqli($this->host, $this->user, $this->pass, $this->name);
 
         if ($this->conn->connect_error) {
-            die("Conexión fallida: " . $this->conn->connect_error);
+            die("Connection failed: " . $this->conn->connect_error);
         }
     }
 
-    public static function getInstance() {
-        if(!self::$instance) {
+    public static function getInstance()
+    {
+        if (!self::$instance) {
             self::$instance = new Database();
         }
 

@@ -22,19 +22,17 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     exit();
 }
 
-// Verificar si la acción en la URL es 'signup'
+
 if (isset($_GET['action']) && $_GET['action'] == 'signup') {
-    $authController->signup();  // Llama al método signup del controlador
+    $authController->signup();
     exit();
 }
 
 if (isset($_GET['action']) && $_GET['action'] == 'createVacationRequestAdmin') {
     $authController = new AuthController();
-    $authController->createVacationRequest();
+    $authController->createVacationRequestAdmin();
     exit();
 }
-
-
 
 
 
@@ -62,6 +60,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit_profile') {
     $employeeController->edit_profile();
     exit();
 }
+if (isset($_GET['action']) && $_GET['action'] == 'deleteUser') {
+    $employeeController = new EmployeeController();
+    $employeeController->deleteUser();
+    exit();
+}
 
 
 
@@ -70,13 +73,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit_profile') {
 
 $vacationController = new VacationController();
 
-// Verificar si la acción es 'requestVacation'
 if (isset($_GET['action']) && $_GET['action'] == 'requestVacation') {
     $vacationController->requestVacation();
     exit();
 }
 
-// Verificar si la acción es 'cancelVacation'
+
 if (isset($_GET['action']) && $_GET['action'] == 'cancelVacation') {
     $vacationController->cancelVacation();
     exit();
@@ -110,16 +112,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'revertRequest') {
 
 
 
-
-
-
-
 ///////////////////////////////////
 
 
-// Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['user_id'])) {
-    // Si el usuario no ha iniciado sesión, redirigir al formulario de login
     header("Location: ../views/login_form.php");
     exit();
 }

@@ -45,9 +45,17 @@ class EmployeeModel
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getAllRoles(){
+         
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT id, role_name FROM roles");
+        $stmt->execute();
+        return  $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 
 
-    public function updateEmployee($employee_id, $username = null, $department_id = null, $total_vacation_days = null, $password = null)
+
+    public function updateEmployee($employee_id, $username, $department_id , $total_vacation_days , $password , $role_id)
     {
         $db = Database::getInstance();
 
@@ -71,6 +79,12 @@ class EmployeeModel
         if (!empty($total_vacation_days)) {
             $fields[] = "total_vacation_days = ?";
             $params[] = $total_vacation_days;
+            $types .= 'i';
+        }
+
+        if (!empty($role_id)) {
+            $fields[] = "role_id = ?";
+            $params[] = $role_id;
             $types .= 'i';
         }
 

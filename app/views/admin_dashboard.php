@@ -6,10 +6,10 @@ require_once __DIR__ . '/../models/VacationModel.php';
 // Almacenamos los mensajes de éxito o error si existen
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
-
+ 
 // Eliminamos los mensajes de la sesión después de cargarlos
 unset($_SESSION['success_message']);
-unset($_SESSION['error_message']);
+unset($_SESSION['error_message']); 
 
 
 
@@ -42,15 +42,16 @@ $result = $conn->query($sql);
 </head>
 
 <body class="bg-gray-100 min-h-screen">
-    <?php if ($success_message): ?>
-        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
-            <span><?php echo $success_message; ?></span>
-        </div>
-    <?php elseif ($error_message): ?>
-        <div class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded">
-            <span><?php echo $error_message; ?></span>
+    <?php if ($success_message || $error_message): ?>
+        <div id="alertBox"
+            class="fixed left-1/2 top-1/2 -translate-x-1/2 z-50 transition-opacity duration-300 ease-in-out ">
+            <div class="px-7 py-5 rounded shadow-lg 
+            <?php echo $success_message ? 'bg-green-100  text-green-700' : 'bg-red-100  text-red-700'; ?>">
+                <span><?php echo $success_message ? $success_message : $error_message; ?></span>
+            </div>
         </div>
     <?php endif; ?>
+
 
     <nav>
         <ul class="nav-menu">
@@ -64,7 +65,7 @@ $result = $conn->query($sql);
                 </ul>
             </li>
 
-            <!-- Grupo de navegación para "Mitarbeiter" -->
+
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle">Mitarbeiter</a>
                 <ul class="dropdown-menu">
@@ -73,7 +74,7 @@ $result = $conn->query($sql);
                 </ul>
             </li>
             <div class="ml-auto flex items-center space-x-4">
-                <span class="flex items-center">
+                <span class="flex items-center user-name">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon-user">
                         <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
                     </svg>
@@ -89,7 +90,7 @@ $result = $conn->query($sql);
         </ul>
     </nav>
 
-    <div class="container mx-auto mt-8">
+    <div class="container mx-auto mt-8 ">
         <h3 class="text-lg font-bold text-gray-700 mb-4">Übersicht alle Mitarbeiter</h3>
         <table class="table-auto w-full bg-white rounded-lg shadow-lg">
             <thead>
@@ -101,6 +102,7 @@ $result = $conn->query($sql);
                     <th class="px-4 py-2 text-left">Anstehende Urlaubstage</th>
                     <th class="px-4 py-2 text-left">Krankentage</th>
                     <th class="px-4 py-2 text-left">Sonderurlaub Tage</th>
+                    <th class="px-4 py-2 text-left">Aktionen</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,23 +112,39 @@ $result = $conn->query($sql);
                 ?>
                 <?php foreach ($employee_vacation_data as $employee): ?>
                     <tr class="hover:bg-blue-100">
-                        <td class="px-4 py-2"><?php echo htmlspecialchars($employee['username']); ?></td>
+                        <td class="px-4 py-2">
+                            <?php echo htmlspecialchars($employee['username']); ?>
+                            <?php if ($employee['role_id'] == 1): ?>
+                                <span class="ml-2 px-2 py-1 text-xs font-semibold text-white bg-red-500 rounded-full">Admin</span>
+                            <?php endif; ?>
+                        </td>
                         <td class="px-4 py-2"><?php echo htmlspecialchars($employee['department_name']); ?></td>
-                        <td class="px-4 py-2"><?php echo htmlspecialchars($employee['total_vacation_days']); ?></td>
-                        <td class="px-4 py-2"><?php echo htmlspecialchars($employee['used_vacation_days']); ?></td>
+                        <td class="px-4 py-2"><?php echo htmlspecialchars((float)$employee['total_vacation_days']); ?></td>
+                        <td class="px-4 py-2"><?php echo htmlspecialchars((float)$employee['used_vacation_days']); ?></td>
                         <td class="px-4 py-2"><?php echo htmlspecialchars($employee['total_vacation_days'] - $employee['used_vacation_days']); ?></td>
-                        <td class="px-4 py-2"><?php echo htmlspecialchars((float)$employee['sick_days'] + (float)$employee['total_half_days']); ?></td>
-                        <td class="px-4 py-2"><?php echo htmlspecialchars($employee['special_holidays_days']); ?></td>
+                        <td class="px-4 py-2"><?php echo htmlspecialchars((float)$employee['sick_days']); ?></td> <!--   + (float)$employee['total_half_days'] -->
+                        <td class="px-4 py-2"><?php echo htmlspecialchars((float)$employee['special_holidays_days']); ?></td>
+                        <td class="">
+                            <form action="/vacation_app/local/index.php?action=deleteUser" method="post" onsubmit="return confirm('Möchten Sie diesen Benutzer wirklich löschen?');">
+                                <input type="hidden" name="user_id" value="<?php echo $employee['id']; ?>">
+                                <button type="submit" class=" hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                    Nutzer Löschen
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
 
-        <div class="bg-white p-6 mt-8 rounded-lg shadow-lg">
-            <h2 class="text-xl font-bold text-gray-700 mb-4">Verteilung von Urlaubstagen an Mitarbeiter</h2>
-            <form action="/vacation_app/local/index.php?action=updateHolidays" method="post" class="space-y-4">
+        <div class="bg-white p-6 mt-8  max-w-md mx-auto ">
+            <h2 class="text-xl font-bold text-gray-700 mb-6 text-center">Schnell Anpassung von Urlaubstagen an Mitarbeiter</h2>
+
+            <form action="/vacation_app/local/index.php?action=updateHolidays" method="post" class="space-y-6">
+
+
                 <div>
-                    <label for="employee" class="block text-sm font-medium text-gray-700 mb-1">Wählen Sie einen Mitarbeiter aus:</label>
+                    <label for="employee" class="block text-sm font-medium text-gray-700 mb-2">Wählen Sie einen Mitarbeiter aus:</label>
                     <select name="employee_id" id="employee" required
                         class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                         <option value="">-- Wählen Sie einen Mitarbeiter aus --</option>
@@ -137,27 +155,24 @@ $result = $conn->query($sql);
                         <?php endwhile; ?>
                     </select>
                 </div>
+
                 <div>
-                    <label for="vacation_days" class="block text-sm font-medium text-gray-700 mb-1">Verteilen Sie die neuen Gesamturlaubstage:</label>
+                    <label for="vacation_days" class="block text-sm font-medium text-gray-700 mb-2">Verteilen Sie die neuen Gesamturlaubstage:</label>
                     <input type="number" name="total_vacation_days" id="vacation_days" min="1" required
-                        class="block w-64 px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
+                        class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                 </div>
-                <div class= "flex justify-center">
-                     <button type="submit" class="w-64 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Tage aktualisieren</button>
+
+                <div class="text-center">
+                    <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition">
+                        Tage aktualisieren
+                    </button>
                 </div>
-               
+
             </form>
         </div>
+
     </div>
 
-    <footer class="bg-gray-200 text-center pt-4 pb-4 mt-8 ">
-        <p class="text-sm text-gray-600">&copy; <?php echo date("Y"); ?> ICON Vernetzte Kommunikation GmbH. By Alvaro Barcelona Peralta.</p>
-        <nav class="space-x-4 text-sm text-gray-600">
-            <a href="#" class="hover:underline">Kontakt</a>
-            <a href="#" class="hover:underline">AGB</a>
-            <a href="#" class="hover:underline">Datenschutz</a>
-        </nav>
-    </footer>
-</body>
+</html> <?php include __DIR__ . '/footer.php'; ?>
 
-</html>
+</body>

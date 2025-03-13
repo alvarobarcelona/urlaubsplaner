@@ -14,15 +14,15 @@ class UserModel
     }
 
     // Verificar si el usuario existe y obtener sus datos
-    public function getUsers($username, $password, $name, $mail, $role_id)
+    public function getUsers($username)
     {
         $db = Database::getInstance();
-
-        $stmt = $this->conn->prepare("SELECT id, username, password, name, mail, role_id FROM users WHERE username = ?");
-        $stmt->bind_param("ssssi", $username, $password, $name, $mail, $role_id);
+        $stmt = $this->conn->prepare("SELECT username FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
+
 
     public function getUserByUsername($username)
     {
@@ -36,18 +36,20 @@ class UserModel
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            return $result->fetch_assoc();  // Devolver el array asociativo del usuario
+            return $result->fetch_assoc();  //array asociativo
         } else {
-            return null;  // Si no existe el usuario, devolver null
+            return null; 
         }
     }
 
 
     // Insertar un nuevo usuario en la base de datos
-    public function createUser($username, $hashed_password, $name, $mail, $role_id)
+    public function createUser($username, $hashed_password, $name, $email, $role_id, $department_id)
     {
-        $stmt = $this->conn->prepare("INSERT INTO users (username, password, name, mail, role_id) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssi", $username, $hashed_password, $name, $mail, $role_id);
+
+        $stmt = $this->conn->prepare("INSERT INTO users (username, password, name, email, role_id, department_id) 
+                                      VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssii", $username, $hashed_password, $name, $email, $role_id, $department_id);
         return $stmt->execute();
     }
 
@@ -83,21 +85,28 @@ class UserModel
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function createVacationRequest($employee_id, $vacation_type_id, $start_datetime, $end_datetime, $is_half_day = false , $half_day_period = null) {
-    
-        $db = Database::getInstance();
-       $stmt = $db->prepare("INSERT INTO vacation_requests (employee_id, vacation_type_id, start_date, end_date, is_half_day, half_day_period, status) 
-                                VALUES (?, ?, ?, ?, ?, ?, 'Approved')");
-    
-    // Ajuste en el tipo de `bind_param`: "iissis" es el correcto en este caso
-    $stmt->bind_param("iissds", $employee_id, $vacation_type_id, $start_datetime, $end_datetime, $is_half_day, $half_day_period);
+    public function createVacationRequest($employee_id, $vacation_type_id, $start_datetime, $end_datetime, $is_half_day = false, $half_day_period = null)
+    {
 
-    // Ejecutar y retornar el resultado
-    $success = $stmt->execute();  // Retorna true si la ejecución fue exitosa
-    
-    return $success;
+        $db = Database::getInstance();
+        $stmt = $db->prepare("INSERT INTO vacation_requests (employee_id, vacation_type_id, start_date, end_date, is_half_day, half_day_period, status) 
+                                VALUES (?, ?, ?, ?, ?, ?, 'Approved')");
+
+        // Ajuste en el tipo de `bind_param`: "iissis" es el correcto en este caso
+        $stmt->bind_param("iissds", $employee_id, $vacation_type_id, $start_datetime, $end_datetime, $is_half_day, $half_day_period);
+
+        // Ejecutar y retornar el resultado
+        $success = $stmt->execute();  // Retorna true si la ejecución fue exitosa
+
+        return $success;
     }
 
+    public function deleteUserById($user_id) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("DELETE FROM users WHERE id = ?");
+        $stmt->bind_param("i", $user_id);
+        return $stmt->execute();
+    }
 
 }
 ?>

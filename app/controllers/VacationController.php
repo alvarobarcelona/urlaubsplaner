@@ -3,12 +3,8 @@
 // app/controllers/VacationController.php
 require_once __DIR__ . '/../models/VacationModel.php';  // Asegúrate de que esta ruta sea correcta
 
-
-
 class VacationController
 {
-
-
 
     //forma correcta del constructor, hacerlo asi en el codigo de abajo para no tener que llamar todo el rato al
     private $vacationModel;
@@ -39,20 +35,22 @@ class VacationController
             exit();
         } */
 
-        // Obtener todas las solicitudes pendientes
+        // Obtener todas las solicitudes pendientes para recibir un mensaje de que no  hay solicitudes pendientes  ACTUALIDAD el mensaje lo muestro ya en la tabla.
+        
         $vacationModel = new VacationModel();
         $requestsPending = $vacationModel->getPendingRequests();
-
+        
+        /*
         if ($requestsPending === null || empty($requestsPending)) {
             $_SESSION['error_message'] = "Es wurden keine offenen Anträge gefunden.";
             $requestsPending = [];  // Asegurarse de que $requests no esté nulo
         }
+        */
 
         // Cargar la vista con las solicitudes (la vista se encargará de mostrar los mensajes)
         require_once '../app/views/manage_requests.php';
     }
 
-    //FUNCIONA NO TOCAR
     // Aprobar o rechazar una solicitud
     public function approveRejectRequest()
     {
@@ -71,9 +69,7 @@ class VacationController
                 $is_half_day = $request['is_half_day'] == 0.5;
 
                 // Actualizar los días de vacaciones del empleado solo si se aprueba
-                $vacationModel->updateVacationDays($request['employee_id'], $request['start_date'], $request['end_date'], $request['vacation_type_id'],$is_half_day);
-
-
+                $vacationModel->updateVacationDays($request['employee_id'], $request['start_date'], $request['end_date'], $request['vacation_type_id'], $is_half_day);
             }
 
             // Actualizar el estado de la solicitud
@@ -94,8 +90,8 @@ class VacationController
             exit();
         }
     }
-    
-    
+
+
     // FUNCIONA NO TOCAR
     // Método para procesar la solicitud de vacaciones
     public function requestVacation()
@@ -110,8 +106,6 @@ class VacationController
             $vacation_type_id = $_POST['vacation_type_id'];
             $start_time = $_POST['start_time'];
             $end_time = $_POST['end_time'];
-
-
 
 
             $start_datetime = $start_date . ' ' . $start_time;
@@ -131,12 +125,15 @@ class VacationController
 
             $success = $vacationModel->requestVacation($employee_id, $vacation_type_id, $start_datetime, $end_datetime, $is_half_day, $half_day_period);
 
+
             if ($success) {
-                $_SESSION['success_message'] = "Solicitud de vacaciones enviada exitosamente.";
-            } else {
-                $_SESSION['error_message'] = "Error al enviar la solicitud de vacaciones.";
-            }
+                    $_SESSION['success_message'] = "Der Antrag wurde erfolgreich erstellt";
+                } else {
+                $_SESSION['error_message'] = " Fehler beim erstellung des Antrags";
+                }
+
             require_once __DIR__ . '/../views/employee_dashboard.php';
+
         } else {
             $vacation_types = $vacationModel->getVacationTypes();
 
@@ -164,16 +161,16 @@ class VacationController
             }
 
             if ($success) {
-                $_SESSION['success_message'] = "La solicitud ha sido cancelada correctamente.";
+                $_SESSION['success_message'] = "Die Anwesenheit wurde erfolgreich gelöscht.";
             } else {
-                $_SESSION['error_message'] = "Hubo un error al cancelar la solicitud.";
+                $_SESSION['error_message'] = "Die Anwesenheit wurde NICHT erfolgreich gelöscht.";
             }
 
             // Redirigir según el rol del usuario
             if ($is_admin) {
-                header("Location: /vacation_app/local/index.php?action=manageRequests");  // Redirección para el administrador
+                header("Location: /vacation_app/local/index.php?action=manageRequests");
             } else {
-                header("Location: /vacation_app/app/views/employee_dashboard.php");  // Redirección para el empleado
+                header("Location: /vacation_app/app/views/employee_dashboard.php");
             }
             exit();
         }
@@ -197,33 +194,31 @@ class VacationController
         require_once __DIR__ . '/../views/admin_request_history.php';
     }
 
-    public function revertRequest() {
+    public function revertRequest()
+    {
         session_start();
-    
+
         // Verificar que el usuario es administrador
         if ($_SESSION['role_id'] != 1) {
             header("Location: /vacation_app/local/index.php?action=login");
             exit();
         }
-    
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $request_id = $_POST['request_id'];
             $vacationModel = new VacationModel();
-    
+
             // Revertir la solicitud aprobada y actualizar los días en la tabla de usuarios
             $success = $vacationModel->cancelApprovedVacation($request_id);
-    
+
             if ($success) {
-                $_SESSION['success_message'] = "La solicitud ha sido revertida exitosamente.";
+                $_SESSION['success_message'] = "Die Abwesenheit wurde erfolgreich rückgängig gemacht";
             } else {
-                $_SESSION['error_message'] = "Error al revertir la solicitud.";
+                $_SESSION['error_message'] = "Fehler bei der Stornierung des Antrags.";
             }
-    
+
             header("Location: /vacation_app/local/index.php?action=showRequestHistory");
             exit();
         }
     }
-
-
-
 }
