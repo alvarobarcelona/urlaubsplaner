@@ -11,7 +11,7 @@ class EmployeeController
         $employeeModel = new EmployeeModel();
 
         // Si es una solicitud POST (el formulario fue enviado)
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $employee_id = $_POST['employee_id'];
             $username = !empty($_POST['username']) ? $_POST['username'] : null;
@@ -26,9 +26,9 @@ class EmployeeController
                 $_SESSION['success_message'] = "Mitarbeiter richtig aktualisiert.";
                 header("Location: /vacation_app/app/views/admin_dashboard.php");
                 exit();
-            } else {
-                echo "Fehler bei der Aktualisierung des Mitarbeiters.";
             }
+
+            echo "Fehler bei der Aktualisierung des Mitarbeiters.";
         } else {
             // Si es una solicitud GET, mostrar el formulario con los empleados
             $employees = $employeeModel->getAllEmployees();
@@ -43,7 +43,7 @@ class EmployeeController
     //NO TOCAR
     public function updateHolidays()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $employee_id = $_POST['employee_id'];
             $total_vacation_days = $_POST['total_vacation_days'];
 
@@ -58,10 +58,9 @@ class EmployeeController
                 header("Location: /vacation_app/app/views/admin_dashboard.php");
 
                 exit();
-            } else {
-                $_SESSION['error_message'] = "Fehler bei der Zuweisung von Urlaubstagen.";
-                //echo "Fehler bei der Zuweisung von Urlaubstagen.";
             }
+
+            $_SESSION['error_message'] = "Fehler bei der Zuweisung von Urlaubstagen.";
         } else {
             // Si no es una solicitud POST, mostrar el formulario.
             require_once __DIR__ . '/vacation_app/app/views/admin_dashboard.php';
@@ -91,9 +90,9 @@ class EmployeeController
     {
 
         // Obtener los datos del formulario enviados mediante POST
-        $user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null; // Asegurarse de que sea un número entero válido
+        $user_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null; // Asegurarse de que sea un número entero válido
         $username = !empty($_POST['username']) ? htmlspecialchars(trim($_POST['username'])) : null; // Limpiar y sanitizar el nombre de usuario
-        $name = !empty($_POST['name']) ? htmlspecialchars(trim($_POST['name'])) : null; // Limpiar y sanitizar el nombre completo
+        $name = !empty($_POST['name']) ? htmlspecialchars(trim($_POST['name'])) : null; // Limpiar el nombre completo
         $email = !empty($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ? $_POST['email'] : null;
         $department_id = !empty($_POST['department_id']) ? $_POST['department_id'] : '-';
 
@@ -120,7 +119,7 @@ class EmployeeController
             $user_id = $_POST['user_id'];
     
             
-            if ($_SESSION['role_id'] != 1) {
+            if ($_SESSION['role_id'] !== 1) {
                 $_SESSION['error_message'] = "Sie haben keine Berechtigung, einen Benutzer zu löschen.";
                 header("Location: /vacation_app/app/views/admin_dashboard.php");
                 exit();

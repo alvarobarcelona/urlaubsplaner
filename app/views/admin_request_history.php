@@ -49,7 +49,7 @@ unset($_SESSION['error_message']);
                 <a href="#" class="dropdown-toggle">Anträge</a>
                 <ul class="dropdown-menu">
                     <li><a href="/vacation_app/local/index.php?action=manageRequests">Offene Anträge</a></li>
-                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Neue Abwesenheit als Admin</a></li>
+                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Abwesenheit eintragen (Als Admin)</a></li>
                     <li><a href="/vacation_app/local/index.php?action=showRequestHistory">Verlauf der Anträge</a></li>
                 </ul>
             </li>
@@ -111,7 +111,11 @@ unset($_SESSION['error_message']);
                         <tr class="hover:bg-blue-100">
                             <!-- <td class="px-4 py-2"><?php echo htmlspecialchars($request['id']); ?></td> -->
                             <td class="px-4 py-2"><?php echo htmlspecialchars($request['username']); ?></td>
-                            <td class="px-4 py-2"><?php echo htmlspecialchars($request['type_name']); ?></td>
+                            <td class="px-4 py-2"><?php echo htmlspecialchars($request['type_name'].' ')?>
+                                <span class="text-blue-700">
+                                    <?php echo htmlspecialchars($request['half_day_period']); ?>
+                                </span>
+                            </td>
                             <td class="px-4 py-2"><?php echo htmlspecialchars($start_date); ?></td>
                             <td class="px-4 py-2"><?php echo htmlspecialchars($end_date); ?></td>
                             <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($created_at); ?></td>

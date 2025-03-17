@@ -54,19 +54,19 @@ class VacationController
     // Aprobar o rechazar una solicitud
     public function approveRejectRequest()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $request_id = $_POST['request_id'];  // ID de la solicitud de vacaciones
             $action = $_POST['action'];  // Acción de aprobar o rechazar
-            $new_status = ($action == 'approve') ? 'Approved' : 'Rejected';
+            $new_status = ($action === 'approve') ? 'Approved' : 'Rejected';
 
 
             // Obtener los detalles de la solicitud de vacaciones
             $vacationModel = new VacationModel();
             $request = $vacationModel->getRequestById($request_id);  // Debes tener una función para obtener una solicitud por su ID
 
-            if ($new_status == 'Approved') {
+            if ($new_status === 'Approved') {
 
-                $is_half_day = $request['is_half_day'] == 0.5;
+                $is_half_day = $request['is_half_day'] === 0.5;
 
                 // Actualizar los días de vacaciones del empleado solo si se aprueba
                 $vacationModel->updateVacationDays($request['employee_id'], $request['start_date'], $request['end_date'], $request['vacation_type_id'], $is_half_day);
@@ -76,7 +76,7 @@ class VacationController
             $success = $vacationModel->updateRequestStatus($request_id, $new_status);
 
             if ($success) {
-                if ($new_status == 'Approved') {
+                if ($new_status === 'Approved') {
                     $_SESSION['success_message'] = "Der Antrag wurde erfolgreich genehmigt.";
                 } else {
                     $_SESSION['success_message'] = "Der Antrag wurde abgelehnt.";
@@ -99,7 +99,7 @@ class VacationController
 
         $vacationModel = new VacationModel();
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $employee_id = $_SESSION['user_id'];
             $start_date = $_POST['start_date'];
             $end_date = $_POST['end_date'];
@@ -144,15 +144,15 @@ class VacationController
     public function cancelVacation()
     {
 
-        $is_admin = ($_SESSION['role_id'] == 1);
+        $is_admin = ($_SESSION['role_id'] === 1);
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $request_id = $_POST['request_id'];  // ID de la solicitud a cancelar
 
             $vacationModel = new VacationModel();
             $request = $vacationModel->getRequestById($request_id);
 
-            if ($request['status'] == 'Approved') {
+            if ($request['status'] === 'Approved') {
                 // Cancelar una solicitud aprobada y revertir los días
                 $success = $vacationModel->cancelApprovedVacation($request_id);
             } else {
@@ -183,7 +183,7 @@ class VacationController
 
         $vacationModel = new VacationModel();
 
-        if ($_SESSION['role_id'] != 1) {
+        if ($_SESSION['role_id'] !== 1) {
             header("Location: /vacation_app/local/index.php?action=login");
             exit();
         }
@@ -196,25 +196,58 @@ class VacationController
 
     public function revertRequest()
     {
-        session_start();
+        //session_start();
 
         // Verificar que el usuario es administrador
-        if ($_SESSION['role_id'] != 1) {
+        if ($_SESSION['role_id'] !== 1) {
             header("Location: /vacation_app/local/index.php?action=login");
             exit();
         }
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $request_id = $_POST['request_id'];
+            $vacationModel = new VacationModel();
+
+            $request = $vacationModel->getRequestById($request_id);
+
+            if ($request['status'] === 'Approved'){
+                // Revertir la solicitud aprobada y actualizar los días en la tabla de usuarios
+                $success = $vacationModel->cancelApprovedVacation($request_id);
+            }else if($request['status'] === 'Rejected'){
+                $success = $vacationModel->removeRejectedVacation($request_id);
+            }
+
+            if ($success) {
+                $_SESSION['success_message'] = "Die Abwesenheit wurde erfolgreich bearbeitet";
+            } else {
+                $_SESSION['error_message'] = "Fehler bei der Stornierung des Antrags.";
+            }
+
+            header("Location: /vacation_app/local/index.php?action=showRequestHistory");
+            exit();
+        }
+    }
+
+    public function removeRejectedVacation()
+    {
+
+        // Verificar que el usuario es administrador
+        if ($_SESSION['role_id'] !== 1) {
+            header("Location: /vacation_app/local/index.php?action=login");
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $request_id = $_POST['request_id'];
             $vacationModel = new VacationModel();
 
             // Revertir la solicitud aprobada y actualizar los días en la tabla de usuarios
-            $success = $vacationModel->cancelApprovedVacation($request_id);
+            $success = $vacationModel->removeRejectedVacation($request_id);
 
             if ($success) {
-                $_SESSION['success_message'] = "Die Abwesenheit wurde erfolgreich rückgängig gemacht";
+                $_SESSION['success_message'] = "Die Abwesenheit wurde erfolgreich gelöscht.";
             } else {
-                $_SESSION['error_message'] = "Fehler bei der Stornierung des Antrags.";
+                $_SESSION['error_message'] = "Fehler bei der löschung des Antrags.";
             }
 
             header("Location: /vacation_app/local/index.php?action=showRequestHistory");

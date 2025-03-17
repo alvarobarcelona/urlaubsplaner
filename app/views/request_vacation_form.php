@@ -11,6 +11,7 @@ $user_name = $_SESSION['username'];
     <title>Abwesenheit eintragen</title>
     <link rel="stylesheet" href="/vacation_app/local/css/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/vacation_app/local/js/main.js"></script>
 </head>
 
 <body class="body-request-vacation">

@@ -60,7 +60,7 @@ $result = $conn->query($sql);
                 <a href="#" class="dropdown-toggle">Anträge</a>
                 <ul class="dropdown-menu">
                     <li><a href="/vacation_app/local/index.php?action=manageRequests">Offene Anträge</a></li>
-                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Neue Abwesenheit als Admin</a></li>
+                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Abwesenheit eintragen (Als Admin)</a></li>
                     <li><a href="/vacation_app/local/index.php?action=showRequestHistory">Verlauf der Anträge</a></li>
                 </ul>
             </li>
@@ -147,10 +147,10 @@ $result = $conn->query($sql);
                     <label for="employee" class="block text-sm font-medium text-gray-700 mb-2">Wählen Sie einen Mitarbeiter aus:</label>
                     <select name="employee_id" id="employee" required
                         class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
-                        <option value="">-- Wählen Sie einen Mitarbeiter aus --</option>
+                        <option value="">-- Bitte Wählen --</option>
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <option value="<?php echo $row['id']; ?>">
-                                <?php echo $row['username'] . ' - Tage pro Jahr : ' . $row['total_vacation_days']; ?>
+                                <?php echo $row['username'] . ' - Tage pro Jahr : ' . (float)$row['total_vacation_days']; ?>
                             </option>
                         <?php endwhile; ?>
                     </select>
@@ -158,7 +158,7 @@ $result = $conn->query($sql);
 
                 <div>
                     <label for="vacation_days" class="block text-sm font-medium text-gray-700 mb-2">Verteilen Sie die neuen Gesamturlaubstage:</label>
-                    <input type="number" name="total_vacation_days" id="vacation_days" min="1" required
+                    <input type="number" name="total_vacation_days" id="vacation_days" min="0.5" step="0.5" required
                         class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                 </div>
 

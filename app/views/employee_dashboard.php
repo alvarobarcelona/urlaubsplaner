@@ -113,7 +113,7 @@ $pending_days = $total_days - $used_days;
     <nav>
         <ul>
             <li><a href="employee_dashboard.php">Dashboard</a></li>
-            <li><a href="/vacation_app/local/index.php?action=generalDashboard">Mein Kalender</a></li>
+            <li><a href="/vacation_app/local/index.php?action=generalDashboard">Kalender</a></li>
             <li><a href="/vacation_app/local/index.php?action=requestVacation">Neue Abwesenheit eintragen</a></li>
 
             <div class="ml-auto flex items-center space-x-4 ">

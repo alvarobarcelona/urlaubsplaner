@@ -19,7 +19,7 @@ class VacationModel
     }
 
     // Obtener todas las solicitudes de vacaciones pendientes
-    public function getPendingRequests()
+    public function getPendingRequests(): array
     {
         // Consulta SQL para obtener las solicitudes pendientes junto con tipo de vacaciones y departamento
         $sql = "SELECT vacation_requests.id, users.username, vacation_requests.start_date, vacation_requests.end_date, 
@@ -50,7 +50,7 @@ class VacationModel
 
 
 
-    public function getEmployeesVacationData()
+    public function getEmployeesVacationData(): array
     {
         $sql = $this->db->prepare("
             SELECT
@@ -71,6 +71,7 @@ class VacationModel
                 vacation_requests vr ON u.id = vr.employee_id   
             GROUP BY 
                 u.id, u.username, u.total_vacation_days, u.used_vacation_days, d.department_name, u.sick_days, u.special_holidays_days, u.role_id
+            ORDER BY u.username
         ");
 
         $sql->execute();
@@ -108,12 +109,12 @@ class VacationModel
 
     //NO TOCAR
     // Cancelar una solicitud aprobada y revertir los días de vacaciones utilizados
-    public function cancelApprovedVacation($request_id)
+    public function cancelApprovedVacation($request_id): bool
     {
         // Obtener los detalles de la solicitud de vacaciones
         $request = $this->getRequestById($request_id);
 
-        if ($request['status'] == 'Approved') {
+        if ($request['status'] === 'Approved') {
 
                 // Asegurar que `is_half_day` está definido antes de pasarlo
                 $is_half_day = isset($request['is_half_day']) ? $request['is_half_day'] : 0;
@@ -131,11 +132,24 @@ class VacationModel
             $stmt->bind_param("i", $request_id);
             return $stmt->execute();
         } else {
-            // Si la solicitud no está aprobada, no se hace nada
+            // Si la solicitud no está aprobada o es rejected por el admin, no se hace nada
             return false;
         }
     }
 
+    //como admin borramos la solicitud cuando ha sido rejected
+    public function removeRejectedVacation($request_id): bool
+    {
+        $request = $this->getRequestById($request_id);
+        if ($request['status'] === 'Rejected') {
+            $stmt = $this->db->prepare("DELETE FROM vacation_requests WHERE id = ?");
+            $stmt->bind_param("i", $request_id);
+            return $stmt->execute();
+        }else{
+            return false;
+        }
+
+    }
 
     public function cancelVacationRequest($request_id)
     {
@@ -155,7 +169,6 @@ class VacationModel
     }
 
 
-    //aqui debo actualizar el sql poruqe hay que agregar los dias de krank y los sonder urlaub si la solicitud es una de las dos
     public function updateVacationDays($employee_id, $start_date, $end_date, $vacation_type_id, $is_half_day = false)
     {
 
@@ -164,8 +177,6 @@ class VacationModel
         $end = new DateTime($end_date);
         $interval = $start->diff($end);
         $days_requested = $interval->days + 1;
-
-
 
         if ($is_half_day) {
             $days_requested = 0.5;
@@ -201,7 +212,6 @@ class VacationModel
 
     public function getVacationTypes()
     {
-
         $stmt = $this->db->prepare("SELECT id, type_name FROM vacation_types");
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -244,7 +254,7 @@ class VacationModel
     public function getApprovedVacations($is_admin, $user_id = null)
     {
         if ($is_admin) {
-            $sql = "SELECT users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_types.type_name 
+            $sql = "SELECT users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_types.type_name, vacation_requests.half_day_period
                     FROM vacation_requests 
                     JOIN users ON vacation_requests.employee_id = users.id
                     JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id 
@@ -268,13 +278,13 @@ class VacationModel
     }
 
 
-    public function getAllRequests()
+    public function getAllRequests(): array
     {
-        $sql = "SELECT vacation_requests.id, users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_requests.status, vacation_requests.created_at , vacation_types.type_name
+        $sql = "SELECT vacation_requests.id, users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_requests.status, vacation_requests.created_at, vacation_requests.half_day_period, vacation_types.type_name
                 FROM vacation_requests
                 JOIN users ON vacation_requests.employee_id = users.id
                 JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id
-                ORDER BY vacation_requests.start_date DESC";
+                ORDER BY vacation_requests.created_at DESC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="121fb010-9933-4037-bc8f-b7157a9cc27e" name="vacation_db@localhost Mapping">
+      <data-sources db="813b5e46-fe46-4801-8748-18295a13538c" ddl="c0187a15-ce67-4f4a-a567-dfb7da094007" />
+      <scope>
+        <node kind="schema" qname="vacation_db" />
+      </scope>
+    </mapping>
+  </component>
+</project>

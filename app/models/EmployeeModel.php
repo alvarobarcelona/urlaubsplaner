@@ -129,7 +129,7 @@ class EmployeeModel
         $db = Database::getInstance();
         $sql = "UPDATE users SET total_vacation_days = ? WHERE id = ?";
         $stmt = $db->prepare($sql);
-        $stmt->bind_param("ii", $total_vacation_days, $employee_id);
+        $stmt->bind_param("di", $total_vacation_days, $employee_id);
         return $stmt->execute();
     }
 

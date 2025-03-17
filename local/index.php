@@ -3,7 +3,7 @@ require_once __DIR__ . '/../app/controllers/AuthController.php';
 require_once __DIR__ . '/../app/controllers/EmployeeController.php';
 require_once __DIR__ . '/../app/controllers/VacationController.php';  
 
- if (session_status() == PHP_SESSION_NONE) {
+ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -11,24 +11,24 @@ require_once __DIR__ . '/../app/controllers/VacationController.php';
 $authController = new AuthController();
 
 
-if (isset($_GET['action']) && $_GET['action'] == 'login') {
+if (isset($_GET['action']) && $_GET['action'] === 'login') {
     $authController->login();
     exit();
 }
 
 
-if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     $authController->logout();
     exit();
 }
 
 
-if (isset($_GET['action']) && $_GET['action'] == 'signup') {
+if (isset($_GET['action']) && $_GET['action'] === 'signup') {
     $authController->signup();
     exit();
 }
 
-if (isset($_GET['action']) && $_GET['action'] == 'createVacationRequestAdmin') {
+if (isset($_GET['action']) && $_GET['action'] === 'createVacationRequestAdmin') {
     $authController = new AuthController();
     $authController->createVacationRequestAdmin();
     exit();
@@ -41,26 +41,26 @@ if (isset($_GET['action']) && $_GET['action'] == 'createVacationRequestAdmin') {
 
 $employeeController = new EmployeeController();
 
-if (isset($_GET['action']) && $_GET['action'] == 'updateHolidays') {
+if (isset($_GET['action']) && $_GET['action'] === 'updateHolidays') {
     $employeeController->updateHolidays(); 
     exit();
 }
 
-if (isset($_GET['action']) && $_GET['action'] == 'editEmployee') {
+if (isset($_GET['action']) && $_GET['action'] === 'editEmployee') {
     $employeeController->editEmployee();
     exit();
 }
 
-if (isset($_GET['action']) && $_GET['action'] == 'updateProfile') {  
+if (isset($_GET['action']) && $_GET['action'] === 'updateProfile') {
     $employeeController->updateProfile();
     exit();
 }
 
-if (isset($_GET['action']) && $_GET['action'] == 'edit_profile') {
+if (isset($_GET['action']) && $_GET['action'] === 'edit_profile') {
     $employeeController->edit_profile();
     exit();
 }
-if (isset($_GET['action']) && $_GET['action'] == 'deleteUser') {
+if (isset($_GET['action']) && $_GET['action'] === 'deleteUser') {
     $employeeController = new EmployeeController();
     $employeeController->deleteUser();
     exit();
@@ -73,40 +73,45 @@ if (isset($_GET['action']) && $_GET['action'] == 'deleteUser') {
 
 $vacationController = new VacationController();
 
-if (isset($_GET['action']) && $_GET['action'] == 'requestVacation') {
+if (isset($_GET['action']) && $_GET['action'] === 'requestVacation') {
     $vacationController->requestVacation();
     exit();
 }
 
 
-if (isset($_GET['action']) && $_GET['action'] == 'cancelVacation') {
+if (isset($_GET['action']) && $_GET['action'] === 'cancelVacation') {
     $vacationController->cancelVacation();
     exit();
 }
 
-if (isset($_GET['action'])&& $_GET['action'] =='approveRejectRequest' ) {
+if (isset($_GET['action'])&& $_GET['action'] === 'approveRejectRequest' ) {
      $vacationController->approveRejectRequest();
      exit();
             
 }
 
-if (isset($_GET['action'])&& $_GET['action'] =='manageRequests' ) {
+if (isset($_GET['action'])&& $_GET['action'] === 'manageRequests' ) {
     $vacationController->manageRequests();
     exit();
                
 }
-if (isset($_GET['action']) && $_GET['action'] == 'generalDashboard') {
+if (isset($_GET['action']) && $_GET['action'] === 'generalDashboard') {
     $vacationController->generalDashboard();
     exit();
 }
 
-if (isset($_GET['action']) && $_GET['action'] == 'showRequestHistory') {
+if (isset($_GET['action']) && $_GET['action'] === 'showRequestHistory') {
     $vacationController->showRequestHistory();
     exit();
 }
 
-if (isset($_GET['action']) && $_GET['action'] == 'revertRequest') {  
+if (isset($_GET['action']) && $_GET['action'] === 'revertRequest') {
     $vacationController->revertRequest();
+    exit();
+}
+
+if (isset($_GET['action']) && $_GET['action'] === 'deleteVacationRequest') {
+    $vacationController->removeRejectedVacation();
     exit();
 }
 
@@ -120,6 +125,4 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-
-?>
 

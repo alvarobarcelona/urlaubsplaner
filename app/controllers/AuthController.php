@@ -18,7 +18,7 @@ class AuthController
             session_start();
         } */
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
@@ -31,19 +31,20 @@ class AuthController
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['role_id'] = $user['role_id']; //muy importante , ya que en cada pagina compruebo que el rol sea el correcto para evitar que un trabajador pueda ver cosas de un admin.
+                $_SESSION['role_id'] = $user['role_id'];
+                //muy importante, ya que en cada página compruebo que el rol sea el correcto para evitar que un trabajador pueda ver cosas de un admin.
 
 
 
                 // Redirigir según el rol del usuario
-                if ($user['role_id'] == 1) {
+                if ($user['role_id'] === 1) {
                     header("Location: /vacation_app/app/views/admin_dashboard.php");
                     exit();
-                } elseif ($user['role_id'] == 2) {
+                } elseif ($user['role_id'] === 2) {
                     header("Location: /vacation_app/app/views/employee_dashboard.php");
                     exit();
                 } else {
-                    echo "Unbekante Rol.<br>";
+                    echo "Unbekannte Rol";
                 }
             } else {
                 $_SESSION['error_message'] = "Falsches Login oder Passwort.";
@@ -65,7 +66,7 @@ class AuthController
 
         $userModel = new UserModel();
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['username'];
             $password = $_POST['password'];
             $name = $_POST['name'];
@@ -95,20 +96,20 @@ class AuthController
                         }, 3000);
                     </script>";
                 exit();
-            } else {
-                // Cifrar la contraseña
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $success = $userModel->createUser($username, $hashed_password, $name, $email, $role_id, $department_id);
+            }
 
-                if ($success) {
-                    $_SESSION['success_message']= "Benutzer erfolgreich registriert.";
-                    
-                    require_once __DIR__ . '/../views/login_form.php';
-                    exit();
-                } else {
-                    $_SESSION['error_message'] ="Fehler bei der Registrierung des Benutzers.";
-                    
-                }
+// Cifrar la contraseña
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $success = $userModel->createUser($username, $hashed_password, $name, $email, $role_id, $department_id);
+
+            if ($success) {
+                $_SESSION['success_message']= "Benutzer erfolgreich registriert.";
+
+                require_once __DIR__ . '/../views/login_form.php';
+                exit();
+            } else {
+                $_SESSION['error_message'] ="Fehler bei der Registrierung des Benutzers.";
+
             }
         } else {
 
@@ -127,20 +128,18 @@ class AuthController
         $vacationModel = new VacationModel();
 
         // Verificar que el usuario es administrador
-        if ($_SESSION['role_id'] != 1) {
+        if ($_SESSION['role_id'] !== 1) {
             header("Location: /vacation_app/local/index.php?action=login");
             exit();
         }
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $employee_id = $_POST['employee_id'];
             $vacation_type_id = $_POST['vacation_type_id'];
             $start_date = $_POST['start_date'];
             $end_date = $_POST['end_date'];
             $start_time = $_POST['start_time'];
             $end_time = $_POST['end_time'];
-
-
 
 
             $start_datetime = $start_date . ' ' . $start_time;

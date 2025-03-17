@@ -11,6 +11,7 @@ $user_name = $_SESSION['username'];
     <title>Admin - Abwesenheit eintragen</title>
     <link rel="stylesheet" href="/vacation_app/local/css/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/vacation_app/local/js/main.js"></script>
 </head>
 
 <body>
@@ -21,7 +22,7 @@ $user_name = $_SESSION['username'];
                 <a href="#" class="dropdown-toggle">Anträge</a>
                 <ul class="dropdown-menu">
                     <li><a href="/vacation_app/local/index.php?action=manageRequests">Offene Anträge</a></li>
-                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Neue Abwesenheit als Admin</a></li>
+                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Abwesenheit eintragen (Als Admin)</a></li>
                     <li><a href="/vacation_app/local/index.php?action=showRequestHistory">Verlauf der Anträge</a></li>
                 </ul>
             </li>
