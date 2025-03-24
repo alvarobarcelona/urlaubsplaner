@@ -36,6 +36,7 @@ $next_vacation_start = isset($next_vacation['start_date'])
 $next_vacation_end = isset($next_vacation['end_date']) 
     ? DateTime::createFromFormat('Y-m-d', $next_vacation['end_date'])->format('d.m.Y') 
     : null;
+$next_vacation_period = isset($next_vacation['half_day_period']);
 
 
 // var_dump($employee);
@@ -104,7 +105,7 @@ $pending_days = $total_days - $used_days;
             class="fixed left-1/2 top-1/2 -translate-x-1/2 z-50 transition-opacity duration-300 ease-in-out ">
             <div class="px-7 py-5 rounded shadow-lg 
             <?php echo $success_message ? 'bg-green-100  text-green-700' : 'bg-red-100  text-red-700'; ?>">
-                <span><?php echo $success_message ? $success_message : $error_message; ?></span>
+                <span><?php echo $success_message ?: $error_message; ?></span>
             </div>
         </div>
     <?php endif; ?>
@@ -112,7 +113,7 @@ $pending_days = $total_days - $used_days;
 
     <nav>
         <ul>
-            <li><a href="employee_dashboard.php">Dashboard</a></li>
+            <li><a href="/vacation_app/app/views/employee_dashboard.php">Dashboard</a></li>
             <li><a href="/vacation_app/local/index.php?action=generalDashboard">Kalender</a></li>
             <li><a href="/vacation_app/local/index.php?action=requestVacation">Neue Abwesenheit eintragen</a></li>
 
@@ -158,6 +159,7 @@ $pending_days = $total_days - $used_days;
                         <p><strong>Art: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($type_vacation); ?></span></p>
                         <p><strong>Startseite: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($next_vacation_start); ?></span></p>
                         <p><strong>Ende: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($next_vacation_end); ?></span></p>
+                        <p><strong>Zeitraum: </strong><span class="text-blue-600"><?php echo htmlspecialchars (empty($next_vacation_period) ? 'Ganztägig' : $next_vacation_period); ?></span></p>
                     </div>
                 <?php else: ?>
                     <p class="text-red-600">Sie haben keine kommenden genehmigten Anträge.</p>
@@ -195,15 +197,15 @@ $pending_days = $total_days - $used_days;
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['type_name']); ?></td>
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($start_date); ?></td>
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($end_date); ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['half_day_period'] ?? 'Ganztag'); ?></td>
+                                    <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['half_day_period'] ?? 'Ganztägig'); ?></td>
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['status']); ?></td>                                   
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($created_at); ?></td>
                                     <td class="border border-gray-300 px-4 py-2 text-center">
-                                        <?php if ($vacation['status'] == 'Pending' || $vacation['status'] == 'Approved'): ?>
-                                            <form action="/vacation_app/local/index.php?action=cancelVacation" method="post">
-                                                <input type="hidden" name="request_id" value="<?php echo $vacation['id']; ?>">
-                                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                                                    onclick="return confirm('Sind Sie sicher, dass Sie diese Abwesenheit stornieren möchten?');">
+                                        <?php if ($vacation['status'] === 'Pending' || $vacation['status'] === 'Approved'): ?>
+                                            <form action="/vacation_app/local/index.php?action=cancelVacation" method="post" id="cancelForm-<?php echo $vacation['id']; ?>">
+                                                <input type="hidden" name="request_id" value="<?php echo $vacation['id'], $vacation['status']; ?>">
+                                                <button type="button" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                                        onclick="showConfirmBox(<?php echo $vacation['id']?>, '<?php echo $vacation['status']; ?>', null)">
                                                     Stornieren
                                                 </button>
                                             </form>
@@ -211,6 +213,7 @@ $pending_days = $total_days - $used_days;
                                             <span>-</span>
                                         <?php endif; ?>
                                     </td>
+
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>

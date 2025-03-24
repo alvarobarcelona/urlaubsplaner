@@ -24,7 +24,7 @@ $username = $_SESSION['username'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard General</title>
+    <title>Kalender</title>
     <link rel="stylesheet" href="/vacation_app/local/css/styles.css">
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
     <script src="https://cdn.tailwindcss.com"></script>

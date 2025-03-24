@@ -18,6 +18,13 @@ class VacationModel
         $this->db = Database::getInstance();
     }
 
+    public function getAllUsers(): array
+    {
+
+        $sql = "SELECT id, username, total_vacation_days FROM users";
+        return $this->db->query($sql)->fetch_all(MYSQLI_ASSOC);
+
+    }
     // Obtener todas las solicitudes de vacaciones pendientes
     public function getPendingRequests(): array
     {
@@ -138,10 +145,10 @@ class VacationModel
     }
 
     //como admin borramos la solicitud cuando ha sido rejected
-    public function removeRejectedVacation($request_id): bool
+    public function removeRejectedOrPendingVacation($request_id): bool
     {
         $request = $this->getRequestById($request_id);
-        if ($request['status'] === 'Rejected') {
+        if ($request['status'] === 'Rejected' || $request['status'] === 'Pending') {
             $stmt = $this->db->prepare("DELETE FROM vacation_requests WHERE id = ?");
             $stmt->bind_param("i", $request_id);
             return $stmt->execute();
@@ -231,7 +238,7 @@ class VacationModel
     // Obtener las próximas vacaciones aprobadas///REVISAR
     public function getNextApprovedVacation($employee_id)
     {
-        $stmt = $this->db->prepare("SELECT start_date, end_date  FROM vacation_requests WHERE employee_id = ? AND status = 'Approved' AND start_date >= CURDATE() ORDER BY start_date ASC LIMIT 1");
+        $stmt = $this->db->prepare("SELECT start_date, end_date, half_day_period  FROM vacation_requests WHERE employee_id = ? AND status = 'Approved' AND start_date >= CURDATE() ORDER BY start_date ASC LIMIT 1");
         $stmt->bind_param("i", $employee_id);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
@@ -244,7 +251,7 @@ class VacationModel
         FROM vacation_requests vr 
         JOIN vacation_types vt ON vr.vacation_type_id = vt.id 
         WHERE vr.employee_id = ?  
-        ORDER BY vr.start_date ASC");
+        ORDER BY vr.created_at DESC" );
         $stmt->bind_param("i", $employee_id);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -280,7 +287,7 @@ class VacationModel
 
     public function getAllRequests(): array
     {
-        $sql = "SELECT vacation_requests.id, users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_requests.status, vacation_requests.created_at, vacation_requests.half_day_period, vacation_types.type_name
+        $sql = "SELECT vacation_requests.id, users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_requests.status, vacation_requests.created_at, vacation_requests.half_day_period, vacation_types.type_name, vacation_requests.employee_id
                 FROM vacation_requests
                 JOIN users ON vacation_requests.employee_id = users.id
                 JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id

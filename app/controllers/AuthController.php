@@ -48,7 +48,6 @@ class AuthController
                 }
             } else {
                 $_SESSION['error_message'] = "Falsches Login oder Passwort.";
-                echo "<script> alert('Falsches Benutzername oder Passwort.') </script>";
                 require_once __DIR__ . '/../views/login_form.php';
             }
         } else {
@@ -164,7 +163,7 @@ class AuthController
             // Llamar al modelo para crear la solicitud sin necesidad de aprobación
             if ($success) {
                 $vacationModel->updateVacationDays($employee_id, $start_date, $end_date, $vacation_type_id, $is_half_day);
-                $_SESSION['success_message'] = "Die Daten wurden erfolgreich hinzugefügt";
+                $_SESSION['success_message'] = "Die Abwesenheit wurden erfolgreich hinzugefügt";
                 require_once __DIR__ . '/../views/admin_dashboard.php';
             } else {
                 $_SESSION['error_message'] = "Einfügungsfehler.";

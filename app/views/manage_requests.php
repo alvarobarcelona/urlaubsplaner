@@ -4,12 +4,11 @@ require_once __DIR__ . '/../../core/Database.php';
 require_once __DIR__ . '/../controllers/VacationController.php';
 
 // Recuperar mensajes de éxito o error
-$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
-$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+$success_message = $_SESSION['success_message'] ?? '';
+$error_message = $_SESSION['error_message'] ?? '';
 
 // Limpiar los mensajes de la sesión después de mostrarlos
-unset($_SESSION['success_message']);
-unset($_SESSION['error_message']);
+unset($_SESSION['success_message'], $_SESSION['error_message']);
 
 $user_name = $_SESSION['username'];
 

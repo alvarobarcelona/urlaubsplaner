@@ -41,7 +41,9 @@ $user_name = $_SESSION['username'];
 
     </nav>
 
-    <div class="container max-w-xl mt-8 mx-auto bg-white shadow-md rounded-lg p-6">
+    <div class="h-screen flex items-center justify-center">
+    <div class="container max-w-xl mt-8 mx-auto ">
+        <div class="bg-white shadow-md rounded-lg p-6">
         <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6">Abwesenheit eintragen</h2>
 
         <form action="/vacation_app/local/index.php?action=requestVacation" method="post" class="space-y-6">
@@ -82,30 +84,31 @@ $user_name = $_SESSION['username'];
                     required>
             </div>
 
+            <div><p><strong>Wollen Sie einen halben Tag eintragen? Wählen sie unter den richtigen Zeitraum.</strong></p></div>
             <!-- Startzeit -->
             <div>
-                <label for="start_time" class="block text-gray-700 font-medium mb-2">Startzeit (Optional):</label>
+                <label for="start_time" class="block text-gray-700 font-medium mb-2">Startzeit:</label>
                 <select
                     id="start_time"
                     name="start_time"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    <option value="">Volltag</option>
-                    <option value="08:00">Vormittag - 08:00</option>
-                    <option value="12:00">Nachmittag - 12:00</option>
+                    <option value="">Ganztägig</option>
+                    <option value="08:00">Vormittag - von 08:00</option>
+                    <option value="12:00">Nachmittag - von 12:00</option>
                 </select>
             </div>
 
 
             <!-- Endzeit -->
             <div>
-                <label for="end_time" class="block text-gray-700 font-medium mb-2">Endzeit (Optional):</label>
+                <label for="end_time" class="block text-gray-700 font-medium mb-2">Endzeit:</label>
                 <select
                     id="end_time"
                     name="end_time"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    <option value="">Volltag</option>
-                    <option value="12:00">Vormittag - 12:00</option>
-                    <option value="16:00">Nachmittag - 16:00</option>
+                    <option value="">Ganztägig</option>
+                    <option value="12:00">Vormittag - bis 12:00</option>
+                    <option value="16:00">Nachmittag - bis 16:00</option>
                 </select>
             </div>
 
@@ -124,6 +127,8 @@ $user_name = $_SESSION['username'];
                 </button>
             </div>
         </form>
+        </div>
+    </div>
     </div>
 
 

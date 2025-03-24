@@ -103,6 +103,8 @@ unset($_SESSION['error_message']);
                 <?php if (!empty($allRequests)) { ?>
                     <?php foreach ($allRequests as $request):
 
+                        $request;
+
                         $start_date = DateTime::createFromFormat('Y-m-d', $request['start_date'])->format('d/m/Y');
                         $end_date = DateTime::createFromFormat('Y-m-d', $request['end_date'])->format('d/m/Y');
                         $created_at = DateTime::createFromFormat('Y-m-d H:i:s', $request['created_at'])->format('d/m/Y H:i');
@@ -125,9 +127,10 @@ unset($_SESSION['error_message']);
                                 </span>
                             </td>
                             <td class="px-4 py-2">
-                                <form action="/vacation_app/local/index.php?action=revertRequest" method="post" class="inline-block">
+                                <form action="/vacation_app/local/index.php?action=revertRequest" method="post" id="cancelForm-<?php echo $request['id']; ?>" class="inline-block">
                                     <input type="hidden" name="request_id" value="<?php echo $request['id']; ?>">
-                                    <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                                    <button type="button" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                                        onclick="showConfirmBox(<?php echo $request['id']?>, '<?php echo $request['status']; ?>', '<?php echo $request['employee_id']; ?>') ">
                                         Antrag Löschen
                                     </button>
                                 </form>

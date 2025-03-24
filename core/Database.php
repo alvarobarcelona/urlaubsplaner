@@ -20,7 +20,7 @@ class Database
         }
     }
 
-    public static function getInstance()
+    public static function getInstance(): mysqli
     {
         if (!self::$instance) {
             self::$instance = new Database();

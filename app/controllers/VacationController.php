@@ -29,11 +29,14 @@ class VacationController
 
     public function manageRequests()
     {
-        // Asegurarse de que el usuario es administrador
-        /*  if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] !== '1') {
-            header("Location: /views/login_form.php");
-            exit();
-        } */
+//            $role_id = $_POST['role_id'];
+//            $user_id = $_SESSION['user_id'];
+
+        // Asegurarse de que el usuario es admin
+//          if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] !== '1') {
+//            header("Location: /views/login_form.php");
+//            exit();
+//        }
 
         // Obtener todas las solicitudes pendientes para recibir un mensaje de que no  hay solicitudes pendientes  ACTUALIDAD el mensaje lo muestro ya en la tabla.
         
@@ -213,12 +216,12 @@ class VacationController
             if ($request['status'] === 'Approved'){
                 // Revertir la solicitud aprobada y actualizar los días en la tabla de usuarios
                 $success = $vacationModel->cancelApprovedVacation($request_id);
-            }else if($request['status'] === 'Rejected'){
-                $success = $vacationModel->removeRejectedVacation($request_id);
+            }else if($request['status'] === 'Rejected' || $request['status'] === 'Pending'){
+                $success = $vacationModel->removeRejectedOrPendingVacation($request_id);
             }
 
             if ($success) {
-                $_SESSION['success_message'] = "Die Abwesenheit wurde erfolgreich bearbeitet";
+                $_SESSION['success_message'] = "Die Abwesenheit wurde erfolgreich gelöscht";
             } else {
                 $_SESSION['error_message'] = "Fehler bei der Stornierung des Antrags.";
             }

@@ -101,14 +101,10 @@ class EmployeeController
         $success = $employeeModel->updateProfile($user_id, $username, $name, $email, $department_id);
 
         if ($success) {
-            echo "<script>
-                        alert('Ihre Änderungen wurden erfolgreich gespeichert.');               
-                </script>";
+            $_SESSION['success_message'] ="Ihre Änderungen wurden erfolgreich gespeichert.";
             require_once __DIR__ . '/../views/employee_dashboard.php';
         } else {
-            echo "<script>
-                        alert('Fehler bei den Änderungen. Prüfen Sie alle Felder.');               
-                </script>";
+            $_SESSION['error_message'] ="Fehler bei den Änderungen. Prüfen Sie alle Felder.";
             require_once __DIR__ . '/../views/profile_form.php';
         }
         exit();
@@ -126,6 +122,15 @@ class EmployeeController
             }
     
             $userModel = new UserModel();
+
+            // Comprobar si el usuario tiene registros en vacation_requests
+            if ($userModel->hasVacationRequests($user_id)) {
+                $_SESSION['error_message'] = "Der Nutzer hat aktive Abwesenheitssätze. Bitte verwalten oder löschen Sie diese zuerst.";
+                header("Location: /vacation_app/app/views/admin_dashboard.php");
+                exit();
+            }
+
+
             $success = $userModel->deleteUserById($user_id);
     
             if ($success) {

@@ -11,9 +11,6 @@ $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] 
 unset($_SESSION['success_message']);
 unset($_SESSION['error_message']); 
 
-
-
-
 // Verifica si el usuario es administrador
 if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] !== 1) {
     header("Location: login_form.php");
@@ -21,11 +18,16 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] !== 1) {
 }
 
 $user_name = $_SESSION['username'];
-$conn = Database::getInstance();
+
+$vacationModel = new VacationModel();
+$allUsers = $vacationModel->getAllUsers();
 
 // Obtener la lista de empleados
-$sql = "SELECT id, username, total_vacation_days FROM users";
-$result = $conn->query($sql);
+//$conn = Database::getInstance();
+//$sql = "SELECT id, username, total_vacation_days FROM users";
+//$result = $conn->query($sql);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -44,10 +46,10 @@ $result = $conn->query($sql);
 <body class="bg-gray-100 min-h-screen">
     <?php if ($success_message || $error_message): ?>
         <div id="alertBox"
-            class="fixed left-1/2 top-1/2 -translate-x-1/2 z-50 transition-opacity duration-300 ease-in-out ">
+            class="fixed left-1/2 top-1/3 -translate-x-1/2 z-10 transition-opacity duration-300 ease-in-out ">
             <div class="px-7 py-5 rounded shadow-lg 
             <?php echo $success_message ? 'bg-green-100  text-green-700' : 'bg-red-100  text-red-700'; ?>">
-                <span><?php echo $success_message ? $success_message : $error_message; ?></span>
+                <span><?php echo $success_message ?: $error_message; ?></span>
             </div>
         </div>
     <?php endif; ?>
@@ -60,7 +62,7 @@ $result = $conn->query($sql);
                 <a href="#" class="dropdown-toggle">Anträge</a>
                 <ul class="dropdown-menu">
                     <li><a href="/vacation_app/local/index.php?action=manageRequests">Offene Anträge</a></li>
-                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Abwesenheit eintragen (Als Admin)</a></li>
+                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Abwesenheit eintragen</a></li>
                     <li><a href="/vacation_app/local/index.php?action=showRequestHistory">Verlauf der Anträge</a></li>
                 </ul>
             </li>
@@ -125,9 +127,10 @@ $result = $conn->query($sql);
                         <td class="px-4 py-2"><?php echo htmlspecialchars((float)$employee['sick_days']); ?></td> <!--   + (float)$employee['total_half_days'] -->
                         <td class="px-4 py-2"><?php echo htmlspecialchars((float)$employee['special_holidays_days']); ?></td>
                         <td class="">
-                            <form action="/vacation_app/local/index.php?action=deleteUser" method="post" onsubmit="return confirm('Möchten Sie diesen Benutzer wirklich löschen?');">
+                            <form action="/vacation_app/local/index.php?action=deleteUser" method="post" id="cancelForm-<?php echo $employee['id']; ?>">
                                 <input type="hidden" name="user_id" value="<?php echo $employee['id']; ?>">
-                                <button type="submit" class=" hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                <button type="button" class=" hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                        onclick="showConfirmBox(null, null, <?php echo $employee['id']?> )">
                                     Nutzer Löschen
                                 </button>
                             </form>
@@ -138,7 +141,7 @@ $result = $conn->query($sql);
         </table>
 
         <div class="bg-white p-6 mt-8  max-w-md mx-auto ">
-            <h2 class="text-xl font-bold text-gray-700 mb-6 text-center">Schnell Anpassung von Urlaubstagen an Mitarbeiter</h2>
+            <h2 class="text-xl font-bold text-gray-700 mb-6 text-center">Schnelle Anpassung von Urlaubstagen an Mitarbeiter</h2>
 
             <form action="/vacation_app/local/index.php?action=updateHolidays" method="post" class="space-y-6">
 
@@ -148,11 +151,11 @@ $result = $conn->query($sql);
                     <select name="employee_id" id="employee" required
                         class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                         <option value="">-- Bitte Wählen --</option>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <option value="<?php echo $row['id']; ?>">
-                                <?php echo $row['username'] . ' - Tage pro Jahr : ' . (float)$row['total_vacation_days']; ?>
+                        <?php foreach ($allUsers as $user): ?>
+                            <option value="<?php echo $user['id']; ?>">
+                                <?php echo $user['username'] . ' - Tage pro Jahr : ' . (float)$user['total_vacation_days']; ?>
                             </option>
-                        <?php endwhile; ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 

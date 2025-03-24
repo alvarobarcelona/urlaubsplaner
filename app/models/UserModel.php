@@ -101,12 +101,29 @@ class UserModel
         return $success;
     }
 
-    public function deleteUserById($user_id) {
+    public function deleteUserById($user_id): bool
+    {
         $db = Database::getInstance();
         $stmt = $db->prepare("DELETE FROM users WHERE id = ?");
         $stmt->bind_param("i", $user_id);
         return $stmt->execute();
     }
 
+    public function hasVacationRequests($user_id): bool
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM vacation_requests WHERE employee_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        return $count > 0;
+    }
+
+
+
+
+
 }
+
 ?>
