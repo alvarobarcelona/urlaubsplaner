@@ -1,3 +1,14 @@
+
+<?php
+// Recuperar mensajes de éxito o error
+$success_message = $_SESSION['success_message'] ?? '';
+$error_message = $_SESSION['error_message'] ?? '';
+
+// Limpiar los mensajes de la sesión después de mostrarlos
+unset($_SESSION['success_message'], $_SESSION['error_message']);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

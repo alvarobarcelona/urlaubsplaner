@@ -5,10 +5,10 @@ require_once __DIR__ . '/../models/EmployeeModel.php';
 class EmployeeController
 {
 
-    
     public function editEmployee()
     {
         $employeeModel = new EmployeeModel();
+        $is_admin = ($_SESSION['role_id'] === 1);
 
         // Si es una solicitud POST (el formulario fue enviado)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -124,11 +124,11 @@ class EmployeeController
             $userModel = new UserModel();
 
             // Comprobar si el usuario tiene registros en vacation_requests
-            if ($userModel->hasVacationRequests($user_id)) {
-                $_SESSION['error_message'] = "Der Nutzer hat aktive Abwesenheitssätze. Bitte verwalten oder löschen Sie diese zuerst.";
-                header("Location: /vacation_app/app/views/admin_dashboard.php");
-                exit();
-            }
+//            if ($userModel->hasVacationRequests($user_id)) {
+//                $_SESSION['error_message'] = "Der Nutzer hat aktive Abwesenheitssätze. Bitte verwalten oder löschen Sie diese zuerst.";
+//                header("Location: /vacation_app/app/views/admin_dashboard.php");
+//                exit();
+//            }
 
 
             $success = $userModel->deleteUserById($user_id);

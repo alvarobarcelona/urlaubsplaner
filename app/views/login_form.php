@@ -1,12 +1,10 @@
 <?php
 
-
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
 
 // Eliminamos los mensajes de la sesión después de cargarlos
-unset($_SESSION['success_message']);
-unset($_SESSION['error_message']);
+unset($_SESSION['success_message'], $_SESSION['error_message']);
 ?>
 <!DOCTYPE html>
 <html lang="de">

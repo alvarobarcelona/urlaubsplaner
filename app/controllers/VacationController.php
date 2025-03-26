@@ -1,5 +1,7 @@
 
 <?php
+
+global $is_admin;
 // app/controllers/VacationController.php
 require_once __DIR__ . '/../models/VacationModel.php';  // Asegúrate de que esta ruta sea correcta
 

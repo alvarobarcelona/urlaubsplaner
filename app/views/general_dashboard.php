@@ -2,16 +2,15 @@
 require_once __DIR__ . '/../../core/Database.php';
 
 // Almacenamos los mensajes de éxito o error si existen
-$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
-$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+$success_message = $_SESSION['success_message'] ?? '';
+$error_message = $_SESSION['error_message'] ?? '';
 
 // Eliminamos los mensajes de la sesión después de cargarlos
-unset($_SESSION['success_message']);
-unset($_SESSION['error_message']);
+unset($_SESSION['success_message'], $_SESSION['error_message']);
 
 // Verificar si el usuario es administrador o empleado
-$is_admin = ($_SESSION['role_id'] == 1);
-$is_employee = ($_SESSION['role_id'] == 2);
+$is_admin = ($_SESSION['role_id'] === 1);
+$is_employee = ($_SESSION['role_id'] === 2);
 
 $conn = Database::getInstance();  // Usar MySQLi
 $username = $_SESSION['username'];
@@ -30,9 +29,7 @@ $username = $_SESSION['username'];
     <script src="https://cdn.tailwindcss.com"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales-all.js"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
 </head>
 
 <body>

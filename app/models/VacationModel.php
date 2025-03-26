@@ -235,10 +235,17 @@ class VacationModel
         return $stmt->get_result()->fetch_assoc();
     }
 
-    // Obtener las próximas vacaciones aprobadas///REVISAR
+
     public function getNextApprovedVacation($employee_id)
     {
-        $stmt = $this->db->prepare("SELECT start_date, end_date, half_day_period  FROM vacation_requests WHERE employee_id = ? AND status = 'Approved' AND start_date >= CURDATE() ORDER BY start_date ASC LIMIT 1");
+        $stmt = $this->db->prepare("SELECT vr.start_date, vr.end_date, vr.half_day_period, vt.type_name  
+        FROM vacation_requests vr
+        JOIN vacation_types vt ON vr.vacation_type_id = vt.id 
+        WHERE employee_id = ? 
+        AND status = 'Approved' 
+        AND start_date >= CURDATE() 
+        ORDER BY start_date 
+        ASC LIMIT 1");
         $stmt->bind_param("i", $employee_id);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();

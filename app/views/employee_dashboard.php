@@ -29,6 +29,8 @@ $employee = $vacationModel->getEmployeeVacation($employee_id);
 
 // Obtener las próximas vacaciones aprobadas
 $next_vacation = $vacationModel->getNextApprovedVacation($employee_id);
+
+$next_vacation_type =  isset($next_vacation ['type_name']) ? $next_vacation['type_name'] : '';
 $next_vacation_start = isset($next_vacation['start_date']) 
     ? DateTime::createFromFormat('Y-m-d', $next_vacation['start_date'])->format('d.m.Y') 
     : null;
@@ -51,17 +53,6 @@ $approved_vacations = $vacationModel->getApprovedVacations(false, $employee_id);
 
 //  Obtener el historial de solicitudes de vacaciones de los usuarios/ no tiene nada que ver con las dos tablas superiores
 $vacation_history = $vacationModel->getVacationHistory($employee_id);
-
-$type_vacation = 'N/A';
-
-if (!empty($approved_vacations)) {
-    foreach ($approved_vacations as $vacation) {
-        if (isset($vacation['type_name'])) {
-            $type_vacation = $vacation['type_name'];
-            break;
-        }
-    }
-}
 
 
 /*foreach ($approved_vacations as $vacation) {
@@ -156,7 +147,7 @@ $pending_days = $total_days - $used_days;
                 <?php if ($next_vacation):?>
 
                     <div class="space-y-2">
-                        <p><strong>Art: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($type_vacation); ?></span></p>
+                        <p><strong>Art: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($next_vacation_type); ?></span></p>
                         <p><strong>Startseite: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($next_vacation_start); ?></span></p>
                         <p><strong>Ende: </strong> <span class="text-blue-600"><?php echo htmlspecialchars($next_vacation_end); ?></span></p>
                         <p><strong>Zeitraum: </strong><span class="text-blue-600"><?php echo htmlspecialchars (empty($next_vacation_period) ? 'Ganztägig' : $next_vacation_period); ?></span></p>

@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // console.log('Request Status:', requestStatus);
          console.log('Employee ID:', employeeId);
 
-        // Aquí agregas la lógica que necesites, como enviar el formulario o hacer otra acción
+        // Aquí agregamos la lógica que necesitamos, como enviar el formulario o hacer otra acción
         if (requestId) {
             document.getElementById(`cancelForm-${requestId}`).submit();
         } else if (employeeId) {

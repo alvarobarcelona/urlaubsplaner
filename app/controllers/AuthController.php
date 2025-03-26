@@ -63,6 +63,9 @@ class AuthController
     public function signup()
     {
 
+        if (!isset($_SESSION)) {
+            session_start();
+        }
         $userModel = new UserModel();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -97,14 +100,13 @@ class AuthController
                 exit();
             }
 
-// Cifrar la contraseña
+            // Cifrar la contraseña
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $success = $userModel->createUser($username, $hashed_password, $name, $email, $role_id, $department_id);
 
             if ($success) {
                 $_SESSION['success_message']= "Benutzer erfolgreich registriert.";
-
-                require_once __DIR__ . '/../views/login_form.php';
+                header('Location: /vacation_app/app/views/login_form.php');
                 exit();
             } else {
                 $_SESSION['error_message'] ="Fehler bei der Registrierung des Benutzers.";
@@ -112,9 +114,9 @@ class AuthController
             }
         } else {
 
-            $employees = $userModel->getAllEmployees();  // Obtener todos los empleados desde el modelo 
+            $employees = $userModel->getAllEmployees();
             $departments = $userModel->getAllDepartments();
-               // Obtener todos los departamentos para el <select>
+
             require_once __DIR__ . '/../views/signup_form.php'; // Mostrar el formulario de registro
         }
     }
@@ -179,8 +181,6 @@ class AuthController
             require_once __DIR__ . '/../views/admin_request_form.php';
         }
     }
-
-
 
 
 

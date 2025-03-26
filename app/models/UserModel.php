@@ -56,7 +56,7 @@ class UserModel
     public function getAllEmployees()
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT id, username, name, email FROM users");
+        $stmt = $db->prepare("SELECT id, username, name, email, role_id  FROM users");
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);  // Devuelve todas las filas como un array asociativo
     }

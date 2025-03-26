@@ -22,12 +22,6 @@ $user_name = $_SESSION['username'];
 $vacationModel = new VacationModel();
 $allUsers = $vacationModel->getAllUsers();
 
-// Obtener la lista de empleados
-//$conn = Database::getInstance();
-//$sql = "SELECT id, username, total_vacation_days FROM users";
-//$result = $conn->query($sql);
-
-
 ?>
 
 <!DOCTYPE html>

@@ -49,7 +49,7 @@ unset($_SESSION['error_message']);
                 <a href="#" class="dropdown-toggle">Anträge</a>
                 <ul class="dropdown-menu">
                     <li><a href="/vacation_app/local/index.php?action=manageRequests">Offene Anträge</a></li>
-                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Abwesenheit eintragen (Als Admin)</a></li>
+                    <li><a href="/vacation_app/local/index.php?action=createVacationRequestAdmin">Abwesenheit eintragen</a></li>
                     <li><a href="/vacation_app/local/index.php?action=showRequestHistory">Verlauf der Anträge</a></li>
                 </ul>
             </li>
