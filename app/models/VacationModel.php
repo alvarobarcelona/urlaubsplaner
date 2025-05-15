@@ -11,8 +11,6 @@ class VacationModel
 {
     private $db;
 
-
-
     public function __construct()
     {
         $this->db = Database::getInstance();
@@ -85,22 +83,23 @@ class VacationModel
         return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    //NO TOCAR
-    public function reverseVacationDays($employee_id, $start_date, $end_date, $vacation_type_id, $is_half_day)
+
+    public function reverseVacationDays($employee_id, $start_date, $end_date, $vacation_type_id, $is_half_day, $working_days)
     {
         // Calcular la diferencia en días
-        $start = new DateTime($start_date);
-        $end = new DateTime($end_date);
-        $days_requested = $end->diff($start)->days + 1;  // Incluye el primer día
+//        $start = new DateTime($start_date);
+//        $end = new DateTime($end_date);
+        $days_requested = $working_days;
 
+        //no cambiar equals a ===
         if ($is_half_day == 0.5) {
             $days_requested = 0.5;
         }
     
         // Determinar la columna a actualizar dependiendo del tipo de vacaciones
-        if ($vacation_type_id == 2) {  // Sonder Urlaub (vacaciones especiales)
+        if ($vacation_type_id === 2) {  // Sonder Urlaub (vacaciones especiales)
             $column_to_update = 'special_holidays_days';
-        } elseif ($vacation_type_id == 3) {  // Krank (días de enfermedad)
+        } elseif ($vacation_type_id === 3) {  // Krank (días de enfermedad)
             $column_to_update = 'sick_days';
         } else {
             $column_to_update = 'used_vacation_days';  // Cualquier otro caso sería vacaciones normales
@@ -116,7 +115,7 @@ class VacationModel
 
     //NO TOCAR
     // Cancelar una solicitud aprobada y revertir los días de vacaciones utilizados
-    public function cancelApprovedVacation($request_id): bool
+    public function cancelApprovedVacation($request_id, $working_days): bool
     {
         // Obtener los detalles de la solicitud de vacaciones
         $request = $this->getRequestById($request_id);
@@ -132,7 +131,8 @@ class VacationModel
                 $request['start_date'],
                 $request['end_date'],
                 $request['vacation_type_id'],
-                $is_half_day);
+                $is_half_day,
+                $working_days);
 
             // Eliminar la solicitud de vacaciones después de revertir los días
             $stmt = $this->db->prepare("DELETE FROM vacation_requests WHERE id = ?");
@@ -158,7 +158,7 @@ class VacationModel
 
     }
 
-    public function cancelVacationRequest($request_id)
+    public function cancelVacationRequest($request_id): bool
     {
         $stmt = $this->db->prepare("DELETE FROM vacation_requests WHERE id = ?");
         $stmt->bind_param("i", $request_id);
@@ -176,14 +176,14 @@ class VacationModel
     }
 
 
-    public function updateVacationDays($employee_id, $start_date, $end_date, $vacation_type_id, $is_half_day = false)
+    public function updateVacationDays($employee_id, $start_date, $end_date, $vacation_type_id, $is_half_day, $working_days): bool
     {
 
         // Calcular la diferencia en días entre las fechas
-        $start = new DateTime($start_date);
-        $end = new DateTime($end_date);
-        $interval = $start->diff($end);
-        $days_requested = $interval->days + 1;
+//        $start = new DateTime($start_date);
+//        $end = new DateTime($end_date);
+//        $interval = $start->diff($end);
+        $days_requested = $working_days;
 
         if ($is_half_day) {
             $days_requested = 0.5;
@@ -195,7 +195,7 @@ class VacationModel
         } elseif ($vacation_type_id == 2) {
             $column_to_update = 'special_holidays_days';
         } else {
-            $column_to_update = 'used_vacation_days';  // Cualquier otro caso sería vacaciones normales
+            $column_to_update = 'used_vacation_days';
         }
 
         // Construir la consulta SQL dinámica

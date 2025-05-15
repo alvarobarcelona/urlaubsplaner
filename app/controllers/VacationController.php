@@ -57,7 +57,12 @@ class VacationController
     }
 
     // Aprobar o rechazar una solicitud
-    public function approveRejectRequest()
+
+    /**
+     * @throws DateMalformedStringException
+     * @throws DateMalformedPeriodStringException
+     */
+    public function approveRejectRequest(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $request_id = $_POST['request_id'];  // ID de la solicitud de vacaciones
@@ -67,14 +72,15 @@ class VacationController
 
             // Obtener los detalles de la solicitud de vacaciones
             $vacationModel = new VacationModel();
-            $request = $vacationModel->getRequestById($request_id);  // Debes tener una función para obtener una solicitud por su ID
+            $request = $vacationModel->getRequestById($request_id);
 
             if ($new_status === 'Approved') {
-
-                $is_half_day = $request['is_half_day'] === 0.5;
+                //no cambiar equals a ===
+                $is_half_day = $request['is_half_day'] == 0.5;
+                $working_days = $this->countWeekdays($request['start_date'], $request['end_date']);
 
                 // Actualizar los días de vacaciones del empleado solo si se aprueba
-                $vacationModel->updateVacationDays($request['employee_id'], $request['start_date'], $request['end_date'], $request['vacation_type_id'], $is_half_day);
+                $vacationModel->updateVacationDays($request['employee_id'], $request['start_date'], $request['end_date'], $request['vacation_type_id'], $is_half_day, $working_days);
             }
 
             // Actualizar el estado de la solicitud
@@ -90,8 +96,10 @@ class VacationController
                 $_SESSION['error_message'] = " Fehler beim Aktualisieren der Antrag";
             }
 
+            include 'views/employee_dashboard.php';
 
             header("Location: /vacation_app/local/index.php?action=manageRequests");
+
             exit();
         }
     }
@@ -146,6 +154,36 @@ class VacationController
         }
     }
 
+    /**
+     * @throws DateMalformedStringException
+     * @throws DateMalformedPeriodStringException
+     */
+    public function countWeekdays($startDate, $endDate)
+    {
+        $start = new DateTime($startDate);
+        $end = new DateTime($endDate);
+        $end->modify('+1 day');
+        // creamos un objeto que representa un período de 1 día.
+        $interval = new DateInterval('P1D');
+        $period = new DatePeriod($start, $interval, $end);
+
+        $workDays = 0;
+
+        foreach ($period as $day) {
+            $dayOfWeek = $day->format('N'); // 1 (Lunes) - 7 (Domingo)
+            if ($dayOfWeek < 6) { // Solo de lunes a viernes
+                $workDays++;
+            }
+        }
+
+        return $workDays;
+    }
+
+
+    /**
+     * @throws DateMalformedStringException
+     * @throws DateMalformedPeriodStringException
+     */
     public function cancelVacation()
     {
 
@@ -157,9 +195,12 @@ class VacationController
             $vacationModel = new VacationModel();
             $request = $vacationModel->getRequestById($request_id);
 
+            $working_days = $this->countWeekdays($request['start_date'], $request['end_date']);
+
+
             if ($request['status'] === 'Approved') {
                 // Cancelar una solicitud aprobada y revertir los días
-                $success = $vacationModel->cancelApprovedVacation($request_id);
+                $success = $vacationModel->cancelApprovedVacation($request_id, $working_days);
             } else {
                 // Cancelar una solicitud pendiente (no aprobada)
                 $success = $vacationModel->cancelVacationRequest($request_id);
@@ -199,6 +240,10 @@ class VacationController
         require_once __DIR__ . '/../views/admin_request_history.php';
     }
 
+    /**
+     * @throws DateMalformedStringException
+     * @throws DateMalformedPeriodStringException
+     */
     public function revertRequest()
     {
         //session_start();
@@ -215,9 +260,12 @@ class VacationController
 
             $request = $vacationModel->getRequestById($request_id);
 
+            $working_days = $this->countWeekdays($request['start_date'], $request['end_date']);
+
+
             if ($request['status'] === 'Approved'){
                 // Revertir la solicitud aprobada y actualizar los días en la tabla de usuarios
-                $success = $vacationModel->cancelApprovedVacation($request_id);
+                $success = $vacationModel->cancelApprovedVacation($request_id, $working_days);
             }else if($request['status'] === 'Rejected' || $request['status'] === 'Pending'){
                 $success = $vacationModel->removeRejectedOrPendingVacation($request_id);
             }

@@ -92,7 +92,7 @@ $username = $_SESSION['username'];
                 dayMaxEvents: true,
                 navLinks: true,
                 events: events,
-
+                // weekends: false,
                 locale: 'de',
                 height: 'auto',
                 contentHeight: 'auto',

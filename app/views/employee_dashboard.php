@@ -1,7 +1,7 @@
 <?php
-
 require_once __DIR__ . '/../../core/Database.php';
 require_once __DIR__ . '/../models/VacationModel.php';
+require_once __DIR__ . '/../controllers/VacationController.php';
 
 // Almacenamos los mensajes de éxito o error si existen
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
@@ -20,6 +20,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] !== 2) {
 
 $user_name = $_SESSION['username'];
 /* $conn = Database::getInstance(); */  // Usar MySQLi
+$vacationController = new VacationController();
 
 
 $vacationModel = new VacationModel();
@@ -38,10 +39,8 @@ $next_vacation_start = isset($next_vacation['start_date'])
 $next_vacation_end = isset($next_vacation['end_date']) 
     ? DateTime::createFromFormat('Y-m-d', $next_vacation['end_date'])->format('d.m.Y') 
     : null;
-$next_vacation_period = isset($next_vacation['half_day_period']);
+$next_vacation_period = $next_vacation['half_day_period'];
 
-
-// var_dump($employee);
 $total_days = $employee['total_vacation_days'] ?? 0;
 $used_days = $employee['used_vacation_days'] ?? 0;
 $total_sick_days = $employee['sick_days'] ?? 0;
@@ -53,24 +52,6 @@ $approved_vacations = $vacationModel->getApprovedVacations(false, $employee_id);
 
 //  Obtener el historial de solicitudes de vacaciones de los usuarios/ no tiene nada que ver con las dos tablas superiores
 $vacation_history = $vacationModel->getVacationHistory($employee_id);
-
-
-/*foreach ($approved_vacations as $vacation) {
-
-        switch ($vacation['type_name']) {
-            case 'Urlaub':
-                $used_days += $vacation['is_half_day'];
-                break;
-            case 'Krank':
-                $total_sick_days += $vacation['is_half_day'];
-                break;
-            case 'Sonderurlaub':
-                $total_special_holidays_days += $vacation['is_half_day'];
-                break;
-        }
-    
-}*/
-
 
 $pending_days = $total_days - $used_days;
 
@@ -141,7 +122,7 @@ $pending_days = $total_days - $used_days;
                 </div>
             </div>
 
-            <!-- Próximas vacaciones aprobadas -->
+            <!-- Nächstes Ereignis block-->
             <div class="bg-white p-6 rounded-lg shadow-lg w-full sm:w-1/2 lg:w-1/3">
                 <h3 class="text-lg font-semibold text-gray-700 mb-4">Nächstes Ereignis</h3>
                 <?php if ($next_vacation):?>
@@ -168,6 +149,7 @@ $pending_days = $total_days - $used_days;
                             <th class="border border-gray-300 px-4 py-2 text-left">Art des Antrags</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Startdatum</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Enddatum</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left w-24">Werktage</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Zeitraum</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Erstellt am</th>
@@ -181,6 +163,7 @@ $pending_days = $total_days - $used_days;
                                 $start_date = DateTime::createFromFormat('Y-m-d', $vacation['start_date'])->format('d/m/Y');
                                 $end_date = DateTime::createFromFormat('Y-m-d', $vacation['end_date'])->format('d/m/Y');
                                 $created_at = DateTime::createFromFormat('Y-m-d H:i:s', $vacation['created_at'])->format('d/m/Y H:i');
+                                $requested_working_days = $vacationController->countWeekdays($vacation['start_date'], $vacation['end_date']);
 
 
                             ?>
@@ -188,6 +171,16 @@ $pending_days = $total_days - $used_days;
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['type_name']); ?></td>
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($start_date); ?></td>
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($end_date); ?></td>
+                                    <td class="border border-gray-300 px-4 py-2">
+                                        <?php
+                                        // no cambiar el equals con === , no coincidira entonces y lo redondeara a 1 (los medios dias)
+                                        if ($vacation['is_half_day'] == 0.50) {
+                                            echo "0.5";
+                                        } else {
+                                            echo htmlspecialchars($requested_working_days);
+                                        }
+                                        ?>
+                                    </td>
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['half_day_period'] ?? 'Ganztägig'); ?></td>
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($vacation['status']); ?></td>                                   
                                     <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($created_at); ?></td>
