@@ -141,6 +141,7 @@ class AuthController
             $end_date = $_POST['end_date'];
             $start_time = $_POST['start_time'];
             $end_time = $_POST['end_time'];
+            $working_days = [];
 
 
             $start_datetime = $start_date . ' ' . $start_time;
@@ -164,7 +165,7 @@ class AuthController
 
             // Llamar al modelo para crear la solicitud sin necesidad de aprobación
             if ($success) {
-                $vacationModel->updateVacationDays($employee_id, $start_date, $end_date, $vacation_type_id, $is_half_day);
+                $vacationModel->updateVacationDays($employee_id, $start_date, $end_date, $vacation_type_id, $is_half_day, $working_days);
                 $_SESSION['success_message'] = "Die Abwesenheit wurden erfolgreich hinzugefügt";
                 require_once __DIR__ . '/../views/admin_dashboard.php';
             } else {

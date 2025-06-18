@@ -106,7 +106,7 @@ class EmployeeModel
         if (!empty($password)) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Asumiendo que el `employee_id` está vinculado con el `user_id`
+
             $stmt = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
             $stmt->bind_param('si', $hashed_password, $employee_id);
 

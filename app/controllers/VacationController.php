@@ -19,11 +19,11 @@ class VacationController
     public function generalDashboard()
     {
 
-        // $is_admin = ($_SESSION['role_id'] == 1);
+        $is_admin = ($_SESSION['role_id'] == 1);
         $user_id = $_SESSION['user_id'];
         $user_name = $_SESSION['username'];
 
-        $vacations = $this->vacationModel->getApprovedVacations($user_id);
+        $vacations = $this->vacationModel->getApprovedVacations($is_admin, $user_id);
         // Cargar la vista y pasar los datos necesarios
         require_once __DIR__ . '/../views/general_dashboard.php';
     }

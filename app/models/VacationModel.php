@@ -265,10 +265,10 @@ class VacationModel
     }
 
 
-    public function getApprovedVacations($is_admin, $user_id = null)
+    public function getApprovedVacations($is_admin, $user_id)
     {
         if ($is_admin) {
-            $sql = "SELECT users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_types.type_name, vacation_requests.half_day_period
+            $sql = "SELECT users.username, vacation_requests.start_date, vacation_requests.end_date, vacation_types.type_name, vacation_requests.half_day_period, vacation_requests.status AS status
                     FROM vacation_requests 
                     JOIN users ON vacation_requests.employee_id = users.id
                     JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id 
@@ -277,13 +277,16 @@ class VacationModel
             $stmt->execute();
             $result = $stmt->get_result();
         } else {
-            $sql = "SELECT start_date, end_date, vacation_types.type_name, is_half_day 
-                    FROM vacation_requests
-                    JOIN vacation_types ON vacation_requests.vacation_type_id = vacation_types.id 
-                    WHERE employee_id = ? 
-                    AND status = 'Approved'";
+            $sql = "SELECT DISTINCT users.username, vr.half_day_period, vr.start_date, vr.end_date, vacation_types.type_name, vr.is_half_day ,vr.status AS status
+                    FROM vacation_requests vr
+                    JOIN users ON vr.employee_id = users.id
+                    JOIN vacation_types ON vr.vacation_type_id = vacation_types.id 
+                    WHERE vr.status = 'Approved'
+                      ";
+//            AND vr.employee_id = ?
+
             $stmt = $this->db->prepare($sql);
-            $stmt->bind_param("i", $user_id);
+//            $stmt->bind_param("i", $user_id);
             $stmt->execute();
             $result = $stmt->get_result();
         }
